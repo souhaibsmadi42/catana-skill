@@ -1,0 +1,27 @@
+@font-face { font-family: 'Inter'; font-weight: 400; src: url('../node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-weight: 600; src: url('../node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-weight: 700; src: url('../node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-weight: 800; src: url('../node_modules/@fontsource/inter/files/inter-latin-800-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Anton'; src: url('../node_modules/@fontsource/anton/files/anton-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Mono'; font-weight: 500; src: url('../node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Mono'; font-weight: 700; src: url('../node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-700-normal.woff2') format('woff2'); }
+
+/* palette: replace with the brand's tokens (keep a near-black base and one hot accent) */
+:root { --bg: #07070C; --ink: #F4F5FA; --dim: #8A90A8; --hot: #00C6FF; --hot2: #7C3AED; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+body { font-family: 'Inter', system-ui, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+#stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+.layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+svg.layer { overflow: visible; }
+#post { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; display: none; }
+
+/* katana type roles: DISPLAY (Anton, huge, uppercase) · LABEL (mono, small, tracked) · BRAND (the real wordmark font) */
+.shot { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 540px; }
+.k { position: absolute; white-space: nowrap; line-height: .86; will-change: transform; }
+.anton { font-family: 'Anton', 'Impact', sans-serif; font-weight: 400; text-transform: uppercase; }
+.kmono { font-family: 'Mono', ui-monospace, monospace; font-weight: 500; font-size: 15px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); white-space: nowrap; position: absolute; line-height: 1.2; }
+.outline { color: transparent !important; -webkit-text-stroke: 3px var(--ink); }
+.outline.hot { -webkit-text-stroke-color: var(--hot); }
+.kgrad { background: linear-gradient(100deg, var(--hot) 0%, var(--hot2) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.ui { position: absolute; font-size: 14px; line-height: 1.25; }

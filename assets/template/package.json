@@ -1,0 +1,14 @@
+{
+  "name": "katana-film",
+  "private": true,
+  "type": "module",
+  "description": "Katana-style motion film: page renders any frame from t, renderer adds the finishing pass",
+  "dependencies": {
+    "@fontsource/anton": "^5.1.0",
+    "@fontsource/inter": "^5.1.0",
+    "@fontsource/jetbrains-mono": "^5.1.0",
+    "ffmpeg-static": "^5.2.0",
+    "puppeteer-core": "^24.0.0",
+    "three": "^0.170.0"
+  }
+}

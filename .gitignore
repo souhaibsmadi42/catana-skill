@@ -1,0 +1,11 @@
+node_modules/
+out/
+qa/
+build/
+__pycache__/
+*.pyc
+*.mp4
+*.wav
+*.skill
+.DS_Store
+Thumbs.db

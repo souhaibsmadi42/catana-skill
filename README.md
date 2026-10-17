@@ -33,7 +33,7 @@ No AI video generation and no credits: everything is HTML/CSS/SVG (with optional
 **Claude Code:** clone the repo into your skills folder; the folder name becomes the skill name.
 
 ```bash
-git clone https://github.com/<your-username>/katana-skill.git ~/.claude/skills/katana
+git clone https://github.com/souhaibsmadi42/katana-skill.git ~/.claude/skills/katana
 ```
 
 (Windows: `%USERPROFILE%\.claude\skills\katana`.) Restart Claude Code, and `katana` appears in the skills list.

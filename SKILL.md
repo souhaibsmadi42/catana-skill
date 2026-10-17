@@ -1,9 +1,9 @@
 ---
-name: katana
+name: catana
 description: Make Katana-style motion graphics films — high-energy promo, launch, product or hype videos (10 s to 3 min) for a website, app, brand or product — built entirely in code and rendered frame-exact to MP4 with a soundtrack. Beat-locked hard cuts, huge slam typography, slash transitions, shake / punch-in / whip / glitch / strobe / flash post effects, real product UI and data, a procedural SFX mix on top of a real music track. Use this skill whenever the user asks for "katana", "katana motion", a "sigma edit", a hype or kinetic edit, a motion graphic video / promo film / launch video for their site or product, a video "cut to the beat", or wants an existing film redone in that punchy style — even if they never say "katana". No AI video generation or credits needed.
 ---
 
-# Katana motion films
+# catana — Katana-style motion films
 
 Katana is an edit language: the picture obeys the music. Every cut, word, flash and camera hit lands on a beat;
 the energy follows the track's sections (calm intro → build → drop → breakdown → silence → bigger drop → outro);

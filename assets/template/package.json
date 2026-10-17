@@ -1,5 +1,5 @@
 {
-  "name": "katana-film",
+  "name": "catana-film",
   "private": true,
   "type": "module",
   "description": "Katana-style motion film: page renders any frame from t, renderer adds the finishing pass",

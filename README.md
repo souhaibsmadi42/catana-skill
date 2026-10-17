@@ -1,4 +1,4 @@
-# katana — a Claude skill for Katana-style motion films
+# catana — a Claude skill for Katana-style motion films
 
 Give Claude a product, a website or a brand plus a music track, and it builds a **beat-locked, high-energy motion
 graphics film** in code. You get hard cuts on the beat, huge slam typography, slash transitions, shake, punch-ins, whips,
@@ -33,12 +33,12 @@ No AI video generation and no credits: everything is HTML/CSS/SVG (with optional
 **Claude Code:** clone the repo into your skills folder; the folder name becomes the skill name.
 
 ```bash
-git clone https://github.com/souhaibsmadi42/katana-skill.git ~/.claude/skills/katana
+git clone https://github.com/souhaibsmadi42/catana-skill.git ~/.claude/skills/catana
 ```
 
-(Windows: `%USERPROFILE%\.claude\skills\katana`.) Restart Claude Code, and `katana` appears in the skills list.
+(Windows: `%USERPROFILE%\.claude\skills\catana`.) Restart Claude Code, and `catana` appears in the skills list.
 
-**Claude.ai / Claude desktop:** download `katana.skill` from the Releases page and upload it under
+**Claude.ai / Claude desktop:** download `catana.skill` from the Releases page and upload it under
 Settings → Capabilities → Skills, or zip this folder and upload the zip.
 
 ## Requirements (on the machine that renders)
@@ -61,7 +61,7 @@ Ask in plain words:
 Claude scaffolds a project with:
 
 ```bash
-python ~/.claude/skills/katana/scripts/new_film.py my-film --music song.wav --duration 30
+python ~/.claude/skills/catana/scripts/new_film.py my-film --music song.wav --duration 30
 ```
 
 Then it writes `src/scenes.js`, checks stills, and renders `master_noaudio.mp4` plus `soundtrack.wav`, muxing them into

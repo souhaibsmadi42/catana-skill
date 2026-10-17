@@ -9,3 +9,4 @@ __pycache__/
 *.skill
 .DS_Store
 Thumbs.db
+!media/*.mp4

@@ -7,6 +7,16 @@ frame-exact to MP4.
 
 No AI video generation and no credits: everything is HTML/CSS/SVG (with optional three.js), rendered by headless Chrome.
 
+## Demo
+
+Two test films, each made by Claude with this skill from a one-paragraph brief (the brands are fictional). The GIFs
+are silent previews; click through for the MP4 with sound.
+
+| Inkwell: 20 s app promo, cut to a 120 BPM track | Ledgerly: 15 s landing-page intro, no music given (SFX only) |
+|---|---|
+| [![Inkwell demo](media/demo-inkwell-20s.gif)](media/demo-inkwell-20s.mp4) | [![Ledgerly demo](media/demo-ledgerly-15s.gif)](media/demo-ledgerly-15s.mp4) |
+| [▶ MP4 with sound](media/demo-inkwell-20s.mp4) | [▶ MP4 with sound](media/demo-ledgerly-15s.mp4) |
+
 ## What you get
 
 - **A workflow Claude follows** (`SKILL.md`): gather real material, read the music, plan the film in beats, build shots,

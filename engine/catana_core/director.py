@@ -134,6 +134,8 @@ def _shot_spec(plan, shot, defaults):
                         fps=plan.get("fps", 30))
     if plan.get("platform"):
         sp.technical["platform"] = plan["platform"]
+    if shot.get("lens"):
+        sp.lens = shot["lens"]                  # per-shot override (e.g. a tighter interior lens); bible lens package otherwise
     if shot.get("lighting"):
         sp.lighting = shot["lighting"]          # per-shot override (e.g. a deliberate day-to-night beat); bible lighting otherwise
     if shot.get("time_of_day"):

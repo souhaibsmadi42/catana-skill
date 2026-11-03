@@ -1,0 +1,14 @@
+{
+  "name": "catana",
+  "owner": {
+    "name": "souhaibsmadi42"
+  },
+  "description": "CATANA: an AI creative director plugin for Claude \u2014 storyboards, image/video prompts with QC, provider orchestration and a local motion film engine.",
+  "plugins": [
+    {
+      "name": "catana",
+      "source": "./",
+      "description": "AI creative director and production engine for images, video and Katana-style motion films."
+    }
+  ]
+}

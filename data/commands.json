@@ -1,0 +1,176 @@
+{
+  "version": 1,
+  "note": "Single source for the slash commands. `python scripts/catana.py docs` regenerates commands/*.md and docs/COMMANDS.md from this file. Plugin commands are invoked as /catana:<name>. /catana:catana is the skill itself (the router).",
+  "commands": [
+    {
+      "name": "hero-shot", "mode": "image", "title": "Hero shot",
+      "purpose": "Premium cinematic still: product hero, packshot, key visual, editorial or portrait image.",
+      "argument_hint": "<subject> [for <platform>] [aspect] [ref: image] [style notes]",
+      "parameters": ["subject (required): what to shoot, with material/colour/finish", "platform or aspect ratio (optional; default by domain)", "reference image(s) and what to preserve (optional)", "style/brand notes (optional)"],
+      "examples": ["/catana:hero-shot matte black perfume bottle on wet basalt, moody, 4:5", "/catana:hero-shot our sneaker from ref shoe.jpg floating over a neon city, keep the logo and colourway"],
+      "behavior": ["Build the 13-field spec with `catana.py enhance` (product/fashion/food/automotive presets), add references with preserve lists", "Lint (grade A/B required), pick an image provider with `catana.py select --op t2i|i2i|multi_ref_image`", "Quote cost and get approval for paid connectors; generate 2–4 variations; verify and log every asset", "Without a usable provider: deliver the prompt pack and say nothing was generated"],
+      "reads": ["docs/IMAGE_GENERATION.md", "references/studios/product.md"],
+      "limitations": ["Exact label/logo text depends on the model; check every output and regenerate or fix in post", "Paid generation needs a connector with credits"]
+    },
+    {
+      "name": "ugc-video", "mode": "ugc", "title": "UGC video",
+      "purpose": "Authentic creator-style video: AI spokesperson, talking head, unboxing, review, demo, testimonial — scripted, multi-scene.",
+      "argument_hint": "<product/offer> [platform] [length] [persona] [hook idea]",
+      "parameters": ["product or offer (required)", "platform (default TikTok 9:16)", "length in seconds", "persona / spokesperson description", "hook or angle"],
+      "examples": ["/catana:ugc-video vitamin C serum, TikTok, 25s, 28-year-old skincare creator, hook: dark spots in 2 weeks", "/catana:ugc-video our budgeting app, Reels, testimonial from a freelance designer"],
+      "behavior": ["Write the script with the UGC beats (hook, problem, product, demo, result, CTA) and voiceover direction", "Plan shots with `catana.py plan new --domain ugc` (handheld phone language), fill bible (persona @id, product)", "Voiceover free via VoiceStudio; spokesperson video via a connector only with approval (lip-sync is a paid step)", "Compile, lint, execute or deliver the prompt pack + script"],
+      "reads": ["references/studios/ugc.md", "references/director.md"],
+      "limitations": ["Never impersonate a real person; AI spokespeople are fictional or consented", "Lip-synced talking heads need a paid connector"]
+    },
+    {
+      "name": "faceless-video", "mode": "faceless", "title": "Faceless video",
+      "purpose": "Narrated video without an on-camera person: b-roll or kinetic typography with voiceover and captions.",
+      "argument_hint": "<topic/script> [platform] [length] [visual style: b-roll|kinetic|mixed]",
+      "parameters": ["topic or script (required)", "platform (default YouTube Shorts 9:16)", "length", "visual style: AI b-roll, kinetic type (motion engine), or mixed"],
+      "examples": ["/catana:faceless-video 5 money habits of first-time founders, Shorts, 45s, kinetic", "/catana:faceless-video history of the Burj Khalifa, YouTube 16:9, 90s, b-roll"],
+      "behavior": ["Write the narration (hook in the first 1.5 s) and split it into timed lines", "Kinetic: build with the local motion engine (free) at the platform format; b-roll: plan shots and prompts per line", "Render the narration with VoiceStudio (free) and mix it under the picture with ducking", "Burn-in captions recommended for muted autoplay"],
+      "reads": ["references/studios/social.md", "references/motion-film.md"],
+      "limitations": ["AI b-roll shots need a connector (paid); kinetic/motion versions are free and local", "The motion engine needs Node, Python and Chrome on the machine"]
+    },
+    {
+      "name": "ad-multiplier", "mode": "ad-variations", "title": "Ad multiplier",
+      "purpose": "Many ad concepts and variations from one product: hooks × angles × formats × platforms, named for A/B testing.",
+      "argument_hint": "<product/offer> [n variations] [platforms] [audience]",
+      "parameters": ["product/offer (required)", "number of variations (default 6)", "platforms", "audience / objective"],
+      "examples": ["/catana:ad-multiplier Aurora earbuds, 9 variations, TikTok + Reels, commuters", "/catana:ad-multiplier spring menu at our café, 6 variations, Instagram feed"],
+      "behavior": ["Define 2–3 creative angles and 3+ hooks; build the variation matrix with a naming scheme", "One spec per variation via the prompt engine; lint each", "Execute the approved subset (quote the total first) or deliver the matrix as a prompt pack", "Return a test plan: which variable each pair isolates"],
+      "reads": ["references/studios/advertising.md", "references/studios/social.md"],
+      "limitations": ["Total cost scales with variations — always quote the batch before generating"]
+    },
+    {
+      "name": "cinematic-video", "mode": "cinematic", "title": "Cinematic video",
+      "purpose": "Film-grade sequence: scene planning, characters, storyboard, camera direction, lighting, grade and continuity.",
+      "argument_hint": "<story/idea> [length] [genre] [aspect]",
+      "parameters": ["story or idea (required)", "length", "genre / tone", "aspect (default 16:9 or 21:9 for scope)"],
+      "examples": ["/catana:cinematic-video a lighthouse keeper's last night before automation, 60s, melancholic", "/catana:cinematic-video neo-noir chase through a rain-soaked Dubai Marina, 30s"],
+      "behavior": ["Logline, beats, characters in the bible (@id), named grade and lens package", "`catana.py plan new --domain cinematic`, fill shots with continuity (screen direction, eyelines, motivated light)", "Compile → keyframe + video prompts per shot, QC, sequence continuity", "Execute shot by shot (reference the previous frame for continuity) or deliver the pack"],
+      "reads": ["references/studios/cinematic.md", "references/director.md"],
+      "limitations": ["Character consistency across many AI shots needs reference images and multi-reference models"]
+    },
+    {
+      "name": "image-to-video", "mode": "i2v", "title": "Image to video",
+      "purpose": "Turn a reference image into a directed video shot (optionally to a last frame).",
+      "argument_hint": "<image> [what moves] [camera move] [duration] [last frame image]",
+      "parameters": ["start image (required)", "subject/scene motion", "camera move (library id or words)", "duration (default by domain)", "last frame image (optional → first/last frame)"],
+      "examples": ["/catana:image-to-video villa.png slow dolly in, palms sway, 6s, keep the architecture exact", "/catana:image-to-video day.png to night.png, timelapse day-to-night, 8s"],
+      "behavior": ["Spec with a first_frame reference (and last_frame if given) and an explicit preserve list", "Choose one primary camera move that fits the duration; one action per ~2.5 s", "Lint, select provider (i2v or first_last), quote, execute, verify against the start frame", "Fallback: prompt pack"],
+      "reads": ["docs/VIDEO_GENERATION.md", "docs/CAMERA_MOVEMENTS.md"],
+      "limitations": ["Geometry and text can drift at high motion intensity — keep it low for architecture/products"]
+    },
+    {
+      "name": "character-studio", "mode": "character", "title": "Character studio",
+      "purpose": "Create a consistent AI character: bible, turnaround sheet, expressions, and reuse across shots.",
+      "argument_hint": "<character description> [style] [uses: ad|film|ugc]",
+      "parameters": ["character description (required)", "visual style", "intended uses"],
+      "examples": ["/catana:character-studio Layla, 30s Emirati architect, short curly hair, linen abaya, warm confident", "/catana:character-studio a small orange robot mascot for a kids' coding app, 3D animated look"],
+      "behavior": ["Write the bible entry (identity, face, hair, body, wardrobe, marks, voice) as one locked description", "Generate a turnaround/expression sheet (with approval) and save references", "Reuse via @id tokens + references in every later shot; lint sequences for drift"],
+      "reads": ["references/studios/character.md"],
+      "limitations": ["No real-person likeness without consent", "Perfect identity lock depends on the model's reference support"]
+    },
+    {
+      "name": "product-commercial", "mode": "product", "title": "Product commercial",
+      "purpose": "Product advertising film: hook, hero reveal, macro details, use, benefit, packshot, end card.",
+      "argument_hint": "<product> [length] [platform] [mood] [ref images]",
+      "parameters": ["product (required)", "length (default 15–20 s)", "platform", "mood / brand notes", "product reference images (strongly recommended)"],
+      "examples": ["/catana:product-commercial Aurora earbuds, 15s, Reels, sleek night city", "/catana:product-commercial hand-made olive oil soap, 20s, warm rustic, ref soap.jpg"],
+      "behavior": ["Plan with the product beats; lighting recipes (rim+strip, backlit liquid, gradient sweep)", "Preserve product shape/label/colour from references in every shot", "Compile, lint, execute (multi-reference models for identity) or deliver the pack; VO free via VoiceStudio"],
+      "reads": ["references/studios/product.md", "references/director.md"],
+      "limitations": ["Label text accuracy varies by model — verify every shot"]
+    },
+    {
+      "name": "storyboard", "mode": "storyboard", "title": "Storyboard",
+      "purpose": "A complete storyboard and shot list from an idea — no generation.",
+      "argument_hint": "<idea> [length] [platform] [domain]",
+      "parameters": ["idea (required)", "length", "platform", "domain (auto-detected)"],
+      "examples": ["/catana:storyboard 40s luxury villa commercial in Abu Dhabi", "/catana:storyboard 30s TikTok launch for a fitness app"],
+      "behavior": ["`catana.py plan new`, fill concept, bible and every shot", "`catana.py plan compile --out dir` → storyboard.md (keyframe + video prompt per shot, timing, camera, transitions, sound, edit sequence, QC)", "Offer to execute any shot or the whole board next"],
+      "reads": ["references/director.md"],
+      "limitations": ["Text storyboard; keyframe images only if the user then asks to generate them"]
+    },
+    {
+      "name": "camera-movement", "mode": "camera", "title": "Camera movement",
+      "purpose": "Build a professional camera-movement prompt (or explain a move) from the 27-move library.",
+      "argument_hint": "<move or description> [subject] [duration] [speed]",
+      "parameters": ["move id/name or a description (required)", "subject/scene", "duration", "speed: slow | medium | fast"],
+      "examples": ["/catana:camera-movement orbit 360 around a perfume bottle, 8s", "/catana:camera-movement what's the difference between push in and dolly in?"],
+      "behavior": ["Look the move up (`catana.py camera show|find`), check combinations and minimum duration (`camera check`)", "Phrase it with `camera phrase` and place it first in the video prompt", "Explain best use, subject behaviour, mistakes and good combinations"],
+      "reads": ["docs/CAMERA_MOVEMENTS.md"],
+      "limitations": ["Models follow one or two simultaneous moves reliably; more are flagged"]
+    },
+    {
+      "name": "architecture-film", "mode": "architecture", "title": "Architecture film",
+      "purpose": "Architectural cinematics and visualization: exteriors, interiors, drone, day-to-night, weather, construction-to-completion.",
+      "argument_hint": "<project> [length] [platform] [renders/plans as refs] [special: day-to-night|weather|construction]",
+      "parameters": ["project (required)", "length", "platform", "reference renders/photos (preserve geometry)", "special sequences"],
+      "examples": ["/catana:architecture-film modern villa in Abu Dhabi, 40s, from renders in ./renders, day-to-night ending", "/catana:architecture-film office tower, construction to completion, 20s, LinkedIn"],
+      "behavior": ["Plan with the architecture beats (establish, approach, threshold, flow, detail, life, hero, end card)", "Preserve massing, floors, openings, roof and camera position from references; low motion intensity; corrected verticals", "Day-to-night/weather/construction as per-shot lighting overrides + transition notes or first/last frames", "Compile, lint, execute or deliver the pack"],
+      "reads": ["references/studios/architecture.md", "references/director.md"],
+      "limitations": ["AI video can still bend geometry — always check verticals and window counts"]
+    },
+    {
+      "name": "scene-builder", "mode": "scenes", "title": "Scene builder",
+      "purpose": "Build a multi-scene sequence with continuity: scenes, shots, transitions and consistent prompts.",
+      "argument_hint": "<sequence description or plan.json> [scenes] [length]",
+      "parameters": ["sequence description or an existing plan.json (required)", "scene breakdown", "length"],
+      "examples": ["/catana:scene-builder three scenes: dawn market, noon chase, night rooftop — 45s", "/catana:scene-builder plan.json"],
+      "behavior": ["Split into scenes, each with its own location/time of day; shots inherit the bible", "Mark deliberate lighting changes as transitions; vary camera moves", "Compile and run sequence QC (aspect, style, grade, time of day, character wording, total length)"],
+      "reads": ["references/director.md"],
+      "limitations": ["Generation of each shot follows the provider rules (quote + approval)"]
+    },
+    {
+      "name": "prompt-enhancer", "mode": "enhance", "title": "Prompt enhancer",
+      "purpose": "Turn a basic prompt into a structured, specific production prompt with a QC report.",
+      "argument_hint": "<prompt> [image|video] [provider]",
+      "parameters": ["prompt (required)", "modality (auto)", "target provider/model (checks its limits)"],
+      "examples": ["/catana:prompt-enhancer a car on a road at sunset", "/catana:prompt-enhancer cinematic shot of a woman in a cafe, video, higgsfield"],
+      "behavior": ["`catana.py enhance \"<prompt>\" --json`, then replace defaults with specifics the user implied", "Show the before/after, the 13-field breakdown, negatives and the lint report with fixes"],
+      "reads": ["docs/PROMPT_ENGINEERING.md"],
+      "limitations": ["Defaults are good starting points, not the user's brand; ask for brand specifics when they matter"]
+    },
+    {
+      "name": "campaign-studio", "mode": "campaign", "title": "Campaign studio",
+      "purpose": "Complete multi-platform campaign: concept, key visual, video spots, platform cuts, copy and a production plan.",
+      "argument_hint": "<brand/product> [objective] [platforms] [budget/scope]",
+      "parameters": ["brand/product (required)", "objective (awareness, sales, leads…)", "platforms", "scope / budget"],
+      "examples": ["/catana:campaign-studio Aurora earbuds launch, awareness, TikTok + Reels + YouTube + LinkedIn", "/catana:campaign-studio Ramadan offer for our restaurant, Instagram + Snapchat"],
+      "behavior": ["Big idea + 2–3 routes; key visual specs; hero spot plan; per-platform cuts from data/platforms.json (ratio, length, hook, safe zones)", "Variation matrix for testing; copy per placement", "Quote the full production before generating; otherwise deliver the campaign pack"],
+      "reads": ["references/studios/advertising.md", "references/studios/social.md", "references/director.md"],
+      "limitations": ["Platform limits change — confirm paid-placement specs before trafficking"]
+    },
+    {
+      "name": "style-transfer", "mode": "style", "title": "Style transfer",
+      "purpose": "Apply a visual style to an image while preserving its subject and composition.",
+      "argument_hint": "<subject image> <style image or description> [strength]",
+      "parameters": ["subject image (required)", "style reference image or description (required)", "how much to change"],
+      "examples": ["/catana:style-transfer villa.jpg in the style of moody.jpg, keep the building exact", "/catana:style-transfer portrait.png as a 1970s Kodachrome editorial"],
+      "behavior": ["Spec with a subject reference (preserve list) and a style reference/description", "Operation style_transfer (one style ref) or multi_ref_image; lint; select provider; execute with approval", "Compare output to the subject reference for drift"],
+      "reads": ["docs/IMAGE_GENERATION.md"],
+      "limitations": ["Strong styles can alter identity/geometry — iterate with a stricter preserve list"]
+    },
+    {
+      "name": "video-director", "mode": "director", "title": "Video director",
+      "purpose": "Direct a complete production from one idea: concept to final edit, with execution through available providers.",
+      "argument_hint": "<idea> [length] [platform] [references] [budget]",
+      "parameters": ["idea (required)", "length", "platform", "references", "budget / approval scope"],
+      "examples": ["/catana:video-director luxury cinematic commercial for a modern villa in Abu Dhabi, 40s", "/catana:video-director 20s launch film for our AI note-taking app, with a voiceover"],
+      "behavior": ["Deliver the 12 Director outputs: concept, visual direction, storyboard, shot list, camera moves, lighting, scene descriptions, image prompts, video prompts, transitions, sound design, edit sequence", "Compile + QC; quote; execute approved shots; VO free via VoiceStudio; assemble via the edit list", "Report generated vs prompt-only shots honestly"],
+      "reads": ["references/director.md"],
+      "limitations": ["Final assembly of AI clips is an edit step (EDL provided); the motion engine can assemble type/graphics locally"]
+    },
+    {
+      "name": "motion-film", "mode": "motion", "title": "Motion film (Katana style)",
+      "purpose": "CATANA's original engine: a beat-locked, code-rendered motion graphics film cut to a music track, rendered locally to MP4.",
+      "argument_hint": "<product/site> [music file] [length] [format 16:9|9:16|1:1|4:5]",
+      "parameters": ["subject: product, site or brand (required)", "music track the user has rights to", "length", "format"],
+      "examples": ["/catana:motion-film 30s katana promo for my app Inkwell, track song.wav", "/catana:motion-film vertical 9:16 hype reel of our dashboard, music ./track.mp3"],
+      "behavior": ["Follow references/motion-film.md: scaffold, read the music, plan in beats, build shots, stills QC, render, mix, deliver", "Optional free voiceover via VoiceStudio, ducked under music"],
+      "reads": ["references/motion-film.md"],
+      "limitations": ["No AI footage (by design); needs Node 18+, Python 3 audio packages and Chrome", "Bring your own music; SFX are procedural"]
+    }
+  ]
+}

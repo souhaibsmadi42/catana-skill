@@ -1,90 +1,98 @@
 ---
 name: catana
-description: Make Katana-style motion graphics films — high-energy promo, launch, product or hype videos (10 s to 3 min) for a website, app, brand or product — built entirely in code and rendered frame-exact to MP4 with a soundtrack. Beat-locked hard cuts, huge slam typography, slash transitions, shake / punch-in / whip / glitch / strobe / flash post effects, real product UI and data, a procedural SFX mix on top of a real music track. Use this skill whenever the user asks for "katana", "katana motion", a "sigma edit", a hype or kinetic edit, a motion graphic video / promo film / launch video for their site or product, a video "cut to the beat", or wants an existing film redone in that punchy style — even if they never say "katana". No AI video generation or credits needed.
+description: AI creative director and production engine for images, video and motion films. Turns a plain idea into a professional production — creative concept, storyboard, shot list, camera moves, lighting, structured image/video prompts that pass a quality check, voiceover, edit — and executes it through connected generators (Higgsfield, Runway, ElevenLabs), the user's free local VoiceStudio, or CATANA's own code-rendered motion engine, falling back to a ready-to-use prompt pack. Use for product photography, hero shots, ads and multi-platform campaigns, UGC and AI spokesperson videos, faceless videos, cinematic sequences and short films, architectural films and renders, character consistency, image-to-video, style transfer, camera movement prompts, prompt enhancement, storyboards, social media reels/TikToks/Shorts, and Katana-style beat-cut motion graphics films ("katana", "sigma edit", hype/launch video cut to music) — even if the user never says "catana".
+license: MIT
 ---
 
-# catana — Katana-style motion films
+# CATANA — AI creative director
 
-Katana is an edit language: the picture obeys the music. Every cut, word, flash and camera hit lands on a beat;
-the energy follows the track's sections (calm intro → build → drop → breakdown → silence → bigger drop → outro);
-type is huge and blunt; one transition motif (the *slash*) ties the film together; texture (grain, chromatic
-fringing, motion blur) is added last. This skill builds that as a deterministic web page — `render(t)` draws any
-frame from its time alone — and renders it with headless Chrome, then mixes sound on the page's own cue list.
+CATANA separates **creative direction** (what to make and how it should look) from **execution** (which engine makes it).
+Direction is always done here, fully and specifically. Execution goes to whatever is really available — and is reported
+honestly.
 
-The engine is a template in `assets/template/`; its `src/scenes.js` is a 12-second demo that uses every primitive.
+Paths are relative to this skill's folder (`<skill>`; in a plugin, `${CLAUDE_PLUGIN_ROOT}`). The engine CLI is
+`python <skill>/scripts/catana.py` (standard library only — runs anywhere). `--help` on any subcommand.
 
-## What to read when
+## Non-negotiable rules
+1. **Never claim something was generated unless a provider returned an asset** (file, URL or job id). Otherwise say
+   "prompt pack — nothing was generated" and deliver the prompts. Log every execution with `catana.py log`.
+2. **Money:** connectors (Higgsfield, Runway, ElevenLabs) spend credits. Preflight the cost (Higgsfield `get_cost:true`,
+   ElevenLabs `estimate_only:true`, Runway `whoami` + model price) and get the user's explicit OK for that amount first.
+3. **Sound is free-only by default** (the user's requirement): voice → the user's local **VoiceStudio**; SFX → CATANA's
+   procedural mixer; music → the user's own track. Paid audio only if the user names that provider for this job.
+4. Don't claim model capabilities you haven't checked: re-verify with the provider's discovery tool before executing.
+5. Original work only: reproduce publicly known *workflows and styles*, never copy proprietary assets, prompts or code;
+   no real-person likeness or voice without consent; use only real product facts and numbers.
+6. Ask only for what is essential (the subject, a must-have reference, the platform if it changes the format). Otherwise
+   infer, state the assumption in one line, and proceed.
 
-| Moment | Read |
-|---|---|
-| Before planning the film | `references/motion-language.md` — the craft: section treatments, effect rates, type rules, copy, restraint |
-| Writing shots | `references/api.md` — kit / post / lib API with snippets |
-| Rendering, audio, QC, delivery, debugging | `references/pipeline.md` |
-| The film needs a 3D model (GLB/IFC/product) | `references/3d-world.md` |
+## The workflow (every request)
+1. **Objective** — what is this for, who sees it, where it runs.
+2. **Output type** — image · video · campaign · storyboard · character · product ad · architectural visualization · motion film.
+3. **References & constraints** — reference images and what must be preserved (`preserve` list), brand rules, platform, length.
+4. **Workflow** — pick the mode from the routing table below and read its reference file.
+5. **Provider** — `catana.py select --op <operation> --available <connectors you can see>` (local ones are detected).
+6. **Prompts** — build the 13-field spec (`catana.py enhance "<request>" --json`), then refine it with real creative content.
+7. **QC gate** — `catana.py lint spec.json [--provider p --model m]`. Fix every error; aim for grade A/B. Multi-shot work:
+   `catana.py plan compile` (lints every shot + sequence continuity).
+8. **Execute** — follow docs/PROVIDERS.md (quote → approval → run → wait → verify the asset → log). On failure ask
+   `catana.py next` what to do (retry / fallback / ask / fix input / prompt pack). Never loop silently onto another paid provider.
+9. **Validate & offer** — look at the output against the spec and the QC checklist; report what is real vs illustrative;
+   offer 2–3 concrete improvements or variations (not open questions).
 
-## Workflow
+## Routing table
 
-### 1. Gather the real material (don't start without it)
-Ask for — or find in the project / website — what makes it *their* film:
-- **Subject**: product name, what it does, the 3–6 claims worth making, real numbers (counts, versions, speeds, prices) that are verifiable. Never invent metrics; illustrative visuals get labelled or kept generic.
-- **Visuals**: logo (SVG ideal), brand palette, fonts, screenshots or live URLs of the UI, any 3D model, photos. Prefer rebuilding UI panels as HTML/CSS from screenshots (crisp under 2× punch-ins) over pasting low-res captures; crop/blur private data (client names, emails, people).
-- **Music**: a real recorded track the user has rights to. The cut is built on it, so it comes first. No track → ask; don't synthesize music.
-- **Format**: length (default = the music's natural ending, often 60–120 s), 16:9 1920×1080 60 fps unless told otherwise (9:16 = 1080×1920: change FILM.W/H and the CSS stage size).
-If the user said "just do it", infer from the website/project and say what you assumed.
+| Request looks like | Mode · command | Read |
+|---|---|---|
+| Unsure / general | router · `/catana:catana` | this file |
+| Premium still, product/hero photo | image · `/catana:hero-shot` | docs/IMAGE_GENERATION.md, references/studios/product.md |
+| Restyle an image, keep its subject | style · `/catana:style-transfer` | docs/IMAGE_GENERATION.md (style transfer) |
+| Animate a reference image | i2v · `/catana:image-to-video` | docs/VIDEO_GENERATION.md |
+| One camera move, done right | camera · `/catana:camera-movement` | docs/CAMERA_MOVEMENTS.md |
+| Improve a prompt | enhance · `/catana:prompt-enhancer` | docs/PROMPT_ENGINEERING.md |
+| Consistent character across shots | character · `/catana:character-studio` | references/studios/character.md |
+| Full production from an idea | director · `/catana:video-director` | references/director.md |
+| Storyboard / shot list only | storyboard · `/catana:storyboard` | references/director.md |
+| Multi-scene sequence prompts | scenes · `/catana:scene-builder` | references/director.md |
+| Cinematic film / sequence | cinematic · `/catana:cinematic-video` | references/studios/cinematic.md + director.md |
+| Product commercial | product · `/catana:product-commercial` | references/studios/product.md + director.md |
+| Architecture film / renders | architecture · `/catana:architecture-film` | references/studios/architecture.md |
+| UGC / AI spokesperson / talking head | ugc · `/catana:ugc-video` | references/studios/ugc.md |
+| Faceless narrated video | faceless · `/catana:faceless-video` | references/studios/social.md (faceless) |
+| Ad concepts × variations | ad-variations · `/catana:ad-multiplier` | references/studios/advertising.md |
+| Multi-platform campaign | campaign · `/catana:campaign-studio` | references/studios/advertising.md + social.md |
+| Reels / TikTok / Shorts / LinkedIn | social · (any of the above) | references/studios/social.md |
+| Katana-style beat-cut motion graphics film | motion · `/catana:motion-film` | references/motion-film.md |
 
-### 2. Scaffold and read the music
-```bash
-python <skill>/scripts/new_film.py <project_dir> --music <track.wav> --duration <s>
-```
-This copies the template, runs `npm install`, and scans the track (`tools/music_scan.py`): tempo, beat-0 offset,
-a per-bar table of kick / hat energy with a section guess, and `qa/music_scan.png`. Then **verify the downbeat**
-(the weakest guess): drops and silences must start on a bar line in the table; fix `OFFSET` in `src/lib.js` if not
-(`--offset` re-scans). Write the section map in beats, e.g. `intro 0–31 · drop 32–63 · break 64–79 · silence 112–117 · drop 120–179 · outro 220–239`.
+Plugin commands are namespaced `/catana:<command>`. Without the plugin (single-skill install or claude.ai upload) the
+user just says the mode in words ("catana storyboard: …") — route the same way.
 
-### 3. Plan the film (write it down before coding)
-- **Concept + one motif** in a sentence — e.g. "The Cut: a blade slices the model into its quantities". The slash (or your motif) marks every section change.
-- **Copy deck**: short, declarative, one idea per beat ("6,393 ELEMENTS." / "EVERY ONE" / "IS A COST."). Sentences only in quiet sections.
-- **Shot plan table** in beats: `beats | section | picture | type | FX | SFX`. Match energy to the section (see motion-language.md): drops cut every 1–2 beats, breakdowns breathe, the silence is nearly empty, the outro holds.
-- Map real data to moments (a counter on a build, a big number on a drop).
-Show the user the concept + section map + a few lines of the plan when the brief was vague; otherwise proceed.
+## Execution engines (details: docs/PROVIDERS.md)
+| Engine | What it does | Cost |
+|---|---|---|
+| **Connectors** — Higgsfield, Runway, ElevenLabs (MCP tools in this session) | AI images, video (t2v, i2v, first/last frame, multi-reference, extend, edit, multi-shot), motion transfer, lip-sync, upscale/reframe | credits → quote + approval |
+| **VoiceStudio** (user's local app, `catana.py voice …`) | voiceover, voice selection/design, line-to-slot fitting | free |
+| **CATANA motion engine** (`scripts/new_film.py`, references/motion-film.md) | code-rendered films: kinetic type, rebuilt UI, data, 3D, beat-locked cuts, procedural SFX, any aspect ratio | free |
+| **Prompt pack** (`catana.py pack`) | production-ready prompts + settings + VO script on disk | free, nothing generated |
 
-### 4. Build the shots
-Edit `src/scenes.js` (the template contains a 12-second demo of every primitive — replace it). Pattern:
-```js
-const S = shot(B(32), B(36), { ui: true });                 // container lives only for these beats
-S.word = T(S.root, 'EXPORT.', { left: '110px', top: '760px', fontSize: '250px', color: 'var(--ink)' });
-S.update = (t, lt) => { slam(S.word, t, B(32), B(36), { s0: 1.25 }); };
-slash(B(32), -0.42, 1.3); addSlashLine(B(32)); flash(B(32), 2); hit(B(32), 1.2); ev(B(32), 'slash', 1.2);
-```
-Every cue is in beats via `B(k)`; post effects and audio cues are registered once at init next to the shot that
-owns them, so picture, FX and sound can never drift apart.
+VoiceStudio runs on the user's computer (`http://127.0.0.1:3900`, or `CATANA_VOICE_STUDIO_URL`). A cloud session can't
+reach it — then deliver the VO script in the prompt pack and say so.
 
-### 5. Look, fix, repeat (stills before video)
-```bash
-node render.mjs stills 4.1 8.2 16.6 …        # pick moments inside each shot (just after a cue, mid-hold)
-python tools/sheet.py qa/s1.jpg 3 out/stills/*.png
-```
-Read the contact sheet image. Check per still: is the right shot showing (nothing from other shots leaking)? text inside
-frame, not clipped, not colliding with UI? text readable against what's behind it (white on white, cyan on cyan)?
-camera framing the subject? Fix and re-render only those stills. Work section by section; it is much faster than
-rendering video.
+## Prompt standard (details: docs/PROMPT_ENGINEERING.md)
+Every prompt is built from 13 fields: objective, subject, environment, composition, camera, lens, lighting, materials,
+motion, style, color grade, technical (aspect ratio, duration, fps, seed), negative constraints — plus references with
+explicit `preserve` lists and camera moves from the library (27 moves; `catana.py camera list`). Rules that the linter
+enforces: concrete nouns over adjectives (no "stunning, 8k, masterpiece"); a light *source and direction*; a focal length;
+framing; for video one action per ~2.5 s, at most two simultaneous camera moves, a move that fits the clip length;
+one time of day per shot; for sequences one locked bible (`@id` tokens) so characters, products, grade and lens never drift.
 
-### 6. Render, sound, deliver
-```bash
-node render.mjs video --workers 6 --crf 15 --name master_noaudio.mp4
-node tools/page.mjs "src/index.html?dump=1" build/events.json && python audio/mix.py
-# mux + web copy + QC: see references/pipeline.md
-```
-Deliver the master and a web copy (CRF ~25), say what was verified (stills, QC scan) and what wasn't (nobody has
-watched it in real time; SFX are procedural; any illustrative visuals). Offer the next iteration rather than asking
-open questions.
+## Delivering
+- Files with paths/links, format, length; per generated asset: provider, model, settings, cost.
+- What was verified (QC grades, your own look at stills/frames) and what wasn't (e.g. nobody listened to the VO).
+- Real vs illustrative content; anything that is a prompt pack only.
+- 2–3 next moves ("tighter hook", "9:16 cut for Reels", "night version of shot 7").
 
-## Gotchas that cost hours last time
-- Shot timing lives in `_t0/_t1`. Scenes attach elements as `S.a`, `S.b`, `S.t1`… — never store timing under short names.
-- Shot containers toggle `display`, not `visibility` (a `visibility:visible` child shows through a hidden parent).
-- `B(k)` is beats; offsets like `i * 0.25` are **seconds**. At 120 BPM 0.25 s is an eighth note — at other tempos use `BEAT/2`, `BEAT/4`. Mixing the two silently pushes cues into the next section.
-- Anton is very wide at big sizes: estimate width ≈ chars × 0.45 × font-size and keep it under ~1700 px.
-- Text over a coloured element: give it a contrasting colour or a dark text-shadow; check stills.
-- Whip transitions cut at `t + dur/2` — put the shot boundary there.
-- Registering a uniform/array value into a THREE.Vector3 slot replaces the object (see 3d-world.md `uni()`).
-- If the user mentions Higgsfield's Katana: that is a paid reference-remix pipeline (AI footage). This skill reproduces the *style* locally; only use paid generation if the user explicitly asks.
+## Engine reference
+`catana.py enhance | lint | camera | select | next | classify-error | log | pack | plan new/compile | voice … | providers | platforms | presets | docs`
+— documented in docs/COMMANDS.md (slash commands) and docs/WORKFLOWS.md (end-to-end recipes). Architecture: docs/ARCHITECTURE.md.
+Problems: docs/TROUBLESHOOTING.md. Tests: `python -m unittest discover tests`.

@@ -32,7 +32,7 @@ MOTION_VERBS = r"\b(walk|walks|walking|turn|turns|turning|rotat\w*|pour\w*|run\w
                r"dance\w*|jump\w*|step\w*|enter\w*|exit\w*|emerg\w*|reveal\w*|steam\w*|swirl\w*|float\w*|land\w*|" \
                r"surface\w*|ris\w*|grow\w*|melt\w*|form\w*|transform\w*|unfold\w*|glow\w*|catch\w*|throw\w*|tak\w*|" \
                r"pick\w*|put\w*|place\w*|slid\w*|fly\w*|flies|crash\w*|burst\w*|driv\w*|sail\w*|swim\w*|cycl\w*|rid\w*|climb\w*|" \
-               r"roll\w*|cruis\w*|rac\w*|speed\w*|hover\w*|crawl\w*|pan\w*|drizzl\w*|drip\w*|sizzl\w*|bounc\w*|shak\w*|wav\w*|sweep\w*)\b"
+               r"present\w*|demonstrat\w*|point\w*|nod\w*|laugh\w*|roll\w*|cruis\w*|rac\w*|speed\w*|hover\w*|crawl\w*|pan\w*|drizzl\w*|drip\w*|sizzl\w*|bounc\w*|shak\w*|wav\w*|sweep\w*)\b"
 TOD_GROUPS = {
     "golden_hour": ["golden hour", "sunset", "sunrise"],
     "blue_hour": ["blue hour", "twilight", "dusk"],
@@ -118,7 +118,8 @@ def lint(spec, provider=None, model=None, platform=None):
 
     # ---------------------------------------------------------------- camera direction
     move_ids = [m["id"] for m in spec.camera_moves]
-    text_moves = [m["id"] for m in cam.find_in_text(" ".join([spec.camera, spec.motion]))]
+    # explicit moves win; free text is only scanned when none were given (preset wording like "camera car" must not add moves)
+    text_moves = [] if move_ids else [m["id"] for m in cam.find_in_text(" ".join([spec.camera, spec.motion]))]
     all_moves = list(dict.fromkeys(move_ids + text_moves))
     if video:
         if not all_moves:
@@ -137,7 +138,7 @@ def lint(spec, provider=None, model=None, platform=None):
             _issue(issues, "warning", "motion", "motion", "motion has no concrete action verb",
                    "describe what moves and how (e.g. 'steam curls up from the cup, her hand slowly turns the mug')")
         dur = t.get("duration") or 5
-        bare = re.sub(r"\([^)]*\)", "", spec.motion.lower())
+        bare = re.sub(r"\([^)]*\)", "", (spec.motion + ", " + spec.subject).lower())   # actions hide in the subject too
         actions = len([a for a in re.split(r",|;|\bthen\b|\band then\b|\bafter that\b", bare) if re.search(MOTION_VERBS, a)])
         if actions > max(2, int(dur / 2.5) + 1):
             _issue(issues, "warning", "motion", "motion", f"{actions} actions in a {dur:g} s clip — models rush or drop actions",

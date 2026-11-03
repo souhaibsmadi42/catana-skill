@@ -10,7 +10,7 @@ src/scenes.js         YOUR FILM: initScenes(), updateScenes(t), gradeAt(t), scen
 src/main.js           frame driver (setTime / postFX / renderReady / ?dump=1 / ?t= / ?play)
 src/style.css         palette tokens + type roles (.k .anton .kmono .outline .hot .kgrad)
 audio/mix.py          music + procedural SFX on build/events.json
-tools/                music_scan.py, sheet.py, qc.py, page.mjs, evalfx.mjs, chrome.mjs
+tools/                music_scan.py, sheet.py, qc.py, page.mjs, evalfx.mjs, chrome.mjs, film.mjs (FILM reader + static server)
 ```
 Layers (back to front): `#gl` 3D · `#dw` SVG drawings · `#ui` HTML UI · `#kt` type · `#ov` overlay SVG (slash, logo strokes) · `#hud`.
 
@@ -23,6 +23,8 @@ Helpers cache last values (`show`, `tf`, `txt`, `attr`), so setting them every f
 - `Ease.{lin,in,out,inOut,outQ,inQ,inOutQ,outExpo,inExpo,inOutExpo,sine,outBack}`
 - `kf(t, [[t0, v0], [t1, v1, ease], …])` — numbers or arrays.
 - `clamp, lerp, inv(t,a,b)`, `rng(seed)`, `fmtN(n)` → "12,480".
+- Format-independent layout: `W`, `H`, `PORTRAIT`, `U` (scale vs a 1080-px short side), `px(n)` → scaled px string,
+  `vx(f)` / `vy(f)` → fraction of frame width / height as px. Never hard-code 1920/1080 in scenes.
 - DOM: `h(tag, cls, parent, css, html)`, `s(svgTag, attrs, parent)`, `show(el, opacity)`, `tf(el, transform)`, `txt(el, str)`, `attr(el, k, v)`.
 
 ## kit.js
@@ -30,6 +32,7 @@ Helpers cache last values (`show`, `tf`, `txt`, `attr`), so setting them every f
 - `shot(a, b, {ui, svg, parent})` → `S` with `S.root` (in #kt), `S.ui` (in #ui) if `ui:true`, `S.svg` (`<g>` in #dw, or in `#ov` with `svg:'ov'`). Set `S.update = (t, lt, p) => {…}`; `lt` = local time, `p` = 0..1.
 - `runShots(t)` — call in `updateScenes`.
 - `drift(el, lt, z0, z1, dx, dy, dur)` — slow push on a container.
+- `fit(str, max, frac=0.86)` → Anton font size keeping `str` inside `frac` of the frame width (capped at `max`·U).
 - `T(parent, html, css, cls='k anton')` → hidden absolutely-positioned element. `cls: 'kmono'` for labels, `'k'` for free styling, `'k anton outline hot'` for outline echoes.
 - `slam(e, t, a, b, {s0, d, dx, dy, od, ox, oy, ofade, rot, grow, fade, base})` — visible only in [a, b).
 - `maskLine(parent, html, css)` + `rise(m, t, a, b, d)` — line rises out of a clip.

@@ -1,48 +1,26 @@
 // Katana frame renderer. Two screenshots per frame: clean frame -> window.postFX (finishing shader) -> final frame.
-// Format (W, H, FPS, DURATION) comes from the page's FILM object (src/lib.js).
-//   node render.mjs stills 1.5 7 12.8                      -> out/stills/t_0001.500.png ...
+// Format (W, H, FPS, DURATION) comes from the page's FILM object (src/lib.js), so any aspect ratio renders at size.
+//   node render.mjs stills 1.5 7 12.8                              -> out/stills/t_0001.500.png ...
 //   node render.mjs video [--workers 6] [--from s] [--to s] [--crf 15] [--name x.mp4]
-//   NOPOST=1 node render.mjs stills 3                      -> clean frames without the finishing pass
-//   node render.mjs stills 1.5 7 12.8          -> out/stills/t_0001.500.png ...
-//   node render.mjs video [--workers 6] [--from 0] [--to 180] [--crf 15]
-//                                              -> out/video_noaudio.mp4 (exact frame count, 60 fps)
-import http from 'node:http';
+//                                                                  -> out/video_noaudio.mp4 (exact frame count)
+//   NOPOST=1 node render.mjs stills 3                              -> clean frames without the finishing pass
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer-core';
 import ffmpegPath from 'ffmpeg-static';
+import { requireChrome } from './tools/chrome.mjs';
+import { readFilm, serve as serveRoot } from './tools/film.mjs';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(ROOT, 'out');
-import { CHROME as _C } from './tools/chrome.mjs';
-const CHROME = _C || [
-  'C:/Program Files/Google/Chrome/Application/chrome.exe', 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
-  (process.env.LOCALAPPDATA || '') + '/Google/Chrome/Application/chrome.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe',
-  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser',
-].find(p => p && fs.existsSync(p));
-if (!CHROME) { console.error('Chrome not found: set CHROME=/path/to/chrome'); process.exit(1); }
-let FPS = 60, DURATION = 12, WIDTH = 1920, HEIGHT = 1080;
-// read FILM from src/lib.js without a browser
-{ const src = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), process.env.PAGE || 'src', 'lib.js'), 'utf8');
-  const grab = k => { const m = src.match(new RegExp('(^|[^A-Za-z_])' + k + ':[ ]*([0-9.]+)')); return m ? parseFloat(m[2]) : null; };
-  FPS = grab('FPS') || FPS; DURATION = grab('DURATION') || DURATION; WIDTH = grab('W') || WIDTH; HEIGHT = grab('H') || HEIGHT; }
+const CHROME = requireChrome();
+const FILM = readFilm(ROOT);
+const FPS = FILM.FPS, DURATION = FILM.DURATION, WIDTH = FILM.W, HEIGHT = FILM.H;
 const PAGE = process.env.PAGE || 'src';
 const HTML = process.env.HTML || 'index.html';
-const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.json': 'application/json', '.glb': 'model/gltf-binary', '.ttf': 'font/ttf', '.svg': 'image/svg+xml', '.woff': 'font/woff' };
-
-function serve() {
-  return new Promise(res => {
-    const srv = http.createServer((req, rsp) => {
-      const p = path.join(ROOT, decodeURIComponent(new URL(req.url, 'http://x').pathname));
-      if (!p.startsWith(ROOT) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { rsp.writeHead(404); rsp.end(); return; }
-      rsp.writeHead(200, { 'Content-Type': TYPES[path.extname(p)] || 'application/octet-stream', 'Cache-Control': 'max-age=3600' });
-      fs.createReadStream(p).pipe(rsp);
-    });
-    srv.listen(0, '127.0.0.1', () => res(srv));
-  });
-}
+const serve = () => serveRoot(ROOT);
 
 async function openPage(port) {
   const browser = await puppeteer.launch({
@@ -80,6 +58,9 @@ function args() {
 }
 
 async function stills(o) {
+  if (!o.list.length || o.list.some(t => !Number.isFinite(t) || t < 0 || t > DURATION)) {
+    console.error(`stills: give times in seconds between 0 and ${DURATION}, e.g. node render.mjs stills 1.5 4`); process.exitCode = 2; return;
+  }
   const srv = await serve();
   const { browser, page, n } = await openPage(srv.address().port);
   console.log(`loaded (${n} images)`);
@@ -142,4 +123,4 @@ async function video(o) {
 const mode = process.argv[2];
 if (mode === 'stills') await stills(args());
 else if (mode === 'video') await video(args());
-else console.log('usage: node render.mjs stills <t...> | video [--workers n] [--from s] [--to s]');
+else { console.log('usage: node render.mjs stills <t...> | video [--workers n] [--from s] [--to s] [--crf n] [--name file.mp4]'); process.exitCode = 2; }

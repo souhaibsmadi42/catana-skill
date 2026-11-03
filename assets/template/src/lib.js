@@ -1,13 +1,18 @@
 // Motion toolkit — every value is a pure function of time t (seconds), so any frame renders in isolation.
 // FILM is the single source of truth for format and music grid; render.mjs reads it from the page.
 export const FILM = {
-  W: 1920, H: 1080, FPS: 60,
+  W: 1920, H: 1080, FPS: 60,   // 16:9 1920x1080 · 9:16 1080x1920 · 1:1 1080x1080 · 4:5 1080x1350 (new_film.py --format)
   DURATION: 12,            // seconds (set to the edit length, e.g. 120)
   BPM: 120,                // from tools/music_scan.py
   OFFSET: 0.035,           // time of beat 0 in seconds (first downbeat)
   MUSIC: 'assets/music.wav',
 };
 export const W = FILM.W, H = FILM.H, FPS = FILM.FPS, DURATION = FILM.DURATION;
+// layout helpers for format-independent scenes: U = scale relative to a 1080-px short side; vx/vy = fraction of the frame
+export const U = Math.min(W, H) / 1080;
+export const px = n => Math.round(n * U) + 'px';
+export const vx = f => Math.round(f * W) + 'px', vy = f => Math.round(f * H) + 'px';
+export const PORTRAIT = H > W;
 
 export const clamp = (x, a = 0, b = 1) => (x < a ? a : x > b ? b : x);
 export const lerp = (a, b, t) => a + (b - a) * t;

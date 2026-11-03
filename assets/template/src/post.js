@@ -18,7 +18,7 @@ const WW = FILM.W, HH = FILM.H;
 // tilt(t,dur,ang)     roll kick that settles                            — accents
 export const FX = [];
 export const hit = (t, k = 1) => FX.push({ type: 'hit', t, k });
-export const flash = (t, frames = 2, k = 1, col = [1, 1, 1]) => FX.push({ type: 'flash', t, d: frames / 60, k, col });
+export const flash = (t, frames = 2, k = 1, col = [1, 1, 1]) => FX.push({ type: 'flash', t, d: frames / FILM.FPS, k, col });
 export const whip = (t, dur, ang, len = 1, wrap = true) => FX.push({ type: 'whip', t, d: dur, ang, len, wrap });
 export const slash = (t, ang = -0.42, k = 1, px = WW / 2, py = HH / 2) => FX.push({ type: 'slash', t, ang, k, px, py });
 export const glitch = (t, dur, k = 1) => FX.push({ type: 'glitch', t, d: dur, k });

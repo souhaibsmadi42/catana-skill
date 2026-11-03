@@ -6,17 +6,25 @@ import os
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _cands = [os.path.join(_ROOT, 'node_modules', 'ffmpeg-static', n) for n in ('ffmpeg.exe', 'ffmpeg')]
 FF = next((c for c in _cands if os.path.exists(c)), 'ffmpeg')
+import re
+if len(sys.argv) < 2: sys.exit('usage: python tools/qc.py video.mp4 [sheet_prefix] [fps]')
 src = sys.argv[1]; pre = sys.argv[2] if len(sys.argv) > 2 else None
-FPS = int(sys.argv[3]) if len(sys.argv) > 3 else 60
-W, H = 240, 135
+if not os.path.exists(src): sys.exit(f'qc: no such file {src}')
+# frame rate and size from the file itself (any FILM format); argv[3] overrides the fps
+_info = subprocess.run([FF, '-hide_banner', '-i', src], capture_output=True, text=True).stderr
+_m = re.search(r'(\d+(?:\.\d+)?) fps', _info); _s = re.search(r'Video:.*?(\d{2,5})x(\d{2,5})', _info)
+FPS = int(sys.argv[3]) if len(sys.argv) > 3 else int(round(float(_m.group(1)))) if _m else 60
+VW, VH = (int(_s.group(1)), int(_s.group(2))) if _s else (1920, 1080)
+W = 240 if VW >= VH else 136; H = int(round(W * VH / VW / 2)) * 2
 p = subprocess.Popen([FF, '-v', 'error', '-i', src, '-vf', f'scale={W}:{H}:flags=area', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-'], stdout=subprocess.PIPE)
 frames = []
 while True:
     b = p.stdout.read(W * H * 3)
     if len(b) < W * H * 3: break
     frames.append(np.frombuffer(b, np.uint8).reshape(H, W, 3))
+if not frames: sys.exit(f'qc: could not decode frames from {src}')
 F = np.stack(frames).astype(np.float32)
-n = len(F); print('frames', n)
+n = len(F); print('frames', n, f'({FPS} fps, {VW}x{VH})')
 g = F.mean(3)
 d = np.abs(np.diff(g, axis=0)).mean((1, 2))          # frame-to-frame change
 lum = g.mean((1, 2))
@@ -49,6 +57,5 @@ if pre:
         tiles = [Image.fromarray(F[min(n - 1, (s0 + k) * FPS)].astype(np.uint8)) for k in range(30) if (s0 + k) * FPS < n]
         sheet = Image.new('RGB', (W * 6, H * 5), (30, 30, 30))
         for k, im in enumerate(tiles): sheet.paste(im, ((k % 6) * W, (k // 6) * H))
-        sheet = sheet.resize((W * 6 * 2, H * 5 * 2), Image.NEAREST) if False else sheet
         sheet.save(f'{pre}_{s0:03d}.png')
     print('sheets written')

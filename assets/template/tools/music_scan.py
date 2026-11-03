@@ -12,9 +12,12 @@ from scipy import signal
 ap = argparse.ArgumentParser()
 ap.add_argument('wav'); ap.add_argument('--bpm', type=float, default=None); ap.add_argument('--offset', type=float, default=None); ap.add_argument('--min', type=float, default=70); ap.add_argument('--max', type=float, default=180)
 A = ap.parse_args()
+if not os.path.exists(A.wav): sys.exit(f'music_scan: no such file {A.wav}')
 x, sr = sf.read(A.wav, dtype='float64')
 m = x.mean(1) if x.ndim > 1 else x
 dur = len(m) / sr
+if dur < 4: sys.exit(f'music_scan: track is {dur:.1f} s — too short to read a tempo (need >= 4 s)')
+SHORT = dur < 16   # fewer than ~8 bars: tempo/offset are usable, the downbeat and section guesses are not
 HOP = 512
 fps = sr / HOP
 
@@ -74,15 +77,16 @@ for p in range(4):
         sc += abs(win(t0, t0 + 2 * beat) - win(t0 - 2 * beat, t0)) ** 2
     ph.append(sc)
 order = np.argsort(ph)[::-1]
-alts = [((off + int(p) * beat) % (4 * beat), ph[p] / max(ph)) for p in order]
+alts = [((off + int(p) * beat) % (4 * beat), ph[p] / max(ph) if max(ph) > 0 else 0.0) for p in order]
 off = alts[0][0]
 if A.offset is not None: off = A.offset
 print(f'tempo {bpm:.2f} BPM | beat {beat:.4f} s | bar {4 * beat:.3f} s | beat-0 offset {off:.3f} s | duration {dur:.2f} s')
 print(f'FILM: BPM: {bpm:.2f}, OFFSET: {off:.3f}')
+if SHORT: print(f'note: only {dur:.1f} s of audio — downbeat and section guesses are unreliable; set OFFSET by ear or with --offset')
 print('bar-phase candidates (offset, score): ' + ', '.join(f'{o:.3f} ({sc:.2f})' for o, sc in alts) + '  <- the downbeat guess is the weakest step: check that drops/silences start on a bar line in the table, or pass --offset')
 
 # per-bar table + section guess
-nb = int((dur - off) / (4 * beat))
+nb = max(1, int((dur - off) / (4 * beat)))
 rows = []
 for k in range(nb):
     a, b = off + k * 4 * beat, off + (k + 1) * 4 * beat

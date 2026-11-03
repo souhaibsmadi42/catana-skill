@@ -1,0 +1,316 @@
+{
+  "title": "Villa Saadiyat — Where the Light Lives",
+  "aspect_ratio": "16:9",
+  "total_seconds": 40.0,
+  "shots": [
+    {
+      "id": "S01",
+      "scene": "SC1",
+      "beat": "establish",
+      "start": 0.0,
+      "duration": 5.0,
+      "camera": [
+        "aerial_reveal"
+      ],
+      "keyframe_prompt": "A modern villa a two-storey contemporary villa of honed beige travertine and board-formed white concrete, with full-height bronze-tinted glazing, a cantilevered roof slab and a 25 m infinity pool facing the sea, on the Saadiyat Island coast seen from beyond the dunes at the edge of the sea, dunes and sea on the Saadiyat Island coast at golden hour. Two-point perspective, horizon at one third, building occupying the golden section with landscape leading lines, eye-level camera at 1.6 m, verticals perfectly corrected, 24mm tilt-shift lens, f/8, straight converging-free verticals. Golden hour sun low from the west raking across the façade, warm interior lights glowing, soft sky fill. Physically accurate materials: honed travertine, board-formed concrete, bronze-tinted glazing with real reflections, natural timber. Photorealistic high-end architectural photography, warm golden highlights, clean neutral midtones, cool sky gradient, gentle contrast, palette: travertine beige, sand gold, bronze glass, deep sea teal, warm white interior light.",
+      "video_prompt": "Slow aerial drone reveal, gliding up and over the foreground to reveal the location at scale: a modern villa a two-storey contemporary villa of honed beige travertine and board-formed white concrete, with full-height bronze-tinted glazing, a cantilevered roof slab and a 25 m infinity pool facing the sea, on the Saadiyat Island coast seen from beyond the dunes at the edge of the sea, the camera rises over a ridge of dune grass as the sea wind bends the grass. Dunes and sea on the Saadiyat Island coast at golden hour. Two-point perspective, horizon at one third, building occupying the golden section with landscape leading lines, eye-level camera at 1.6 m, verticals perfectly corrected, 24mm tilt-shift lens, f/8, straight converging-free verticals. Golden hour sun low from the west raking across the façade, warm interior lights glowing, soft sky fill. Physically accurate materials: honed travertine, board-formed concrete, bronze-tinted glazing with real reflections, natural timber. Photorealistic high-end architectural photography, warm golden highlights, clean neutral midtones, cool sky gradient, gentle contrast, palette: travertine beige, sand gold, bronze glass, deep sea teal, warm white interior light. Low motion intensity, temporally consistent, no flicker, stable identity and geometry from first to last frame, 5-second shot.",
+      "negative_prompt": "blurry, low resolution, distorted anatomy, extra limbs or fingers, warped text, watermark, logo artifacts, oversaturated colors, warped or bent verticals, impossible geometry, melting or merging structures, floating buildings, distorted windows, extra floors, people with distorted faces, fisheye distortion, text overlays, lens flare streaks, crowds, cars in frame, identity drift, changing face or hairstyle, changing wardrobe",
+      "params": {
+        "aspect_ratio": "16:9",
+        "duration": 5.0,
+        "fps": 30
+      },
+      "vo": "Some places hold the light.",
+      "sfx": "wind over the dunes",
+      "transition_out": "fade in from black",
+      "qc": {
+        "score": 100,
+        "grade": "A",
+        "ready": true,
+        "issues": []
+      }
+    },
+    {
+      "id": "S02",
+      "scene": "SC1",
+      "beat": "approach",
+      "start": 5.0,
+      "duration": 5.0,
+      "camera": [
+        "dolly_in"
+      ],
+      "keyframe_prompt": "The entrance of a two-storey contemporary villa of honed beige travertine and board-formed white concrete, with full-height bronze-tinted glazing, a cantilevered roof slab and a 25 m infinity pool facing the sea, on the Saadiyat Island coast, a pivoting timber door under the cantilevered roof, a gravel forecourt lined with date palms. Two-point perspective, horizon at one third, building occupying the golden section with landscape leading lines, eye-level camera at 1.6 m, verticals perfectly corrected, 24mm tilt-shift lens, f/8, straight converging-free verticals. Golden hour sun low from the west raking across the façade, warm interior lights glowing, soft sky fill. Physically accurate materials: honed travertine, board-formed concrete, bronze-tinted glazing with real reflections, natural timber. Photorealistic high-end architectural photography, warm golden highlights, clean neutral midtones, cool sky gradient, gentle contrast, palette: travertine beige, sand gold, bronze glass, deep sea teal, warm white interior light.",
+      "video_prompt": "Slow dolly in toward the subject on a smooth track, constant height, real parallax in the background: the entrance of a two-storey contemporary villa of honed beige travertine and board-formed white concrete, with full-height bronze-tinted glazing, a cantilevered roof slab and a 25 m infinity pool facing the sea, on the Saadiyat Island coast, a pivoting timber door under the cantilevered roof, palm shadows sway slowly across the travertine path. A gravel forecourt lined with date palms. Two-point perspective, horizon at one third, building occupying the golden section with landscape leading lines, eye-level camera at 1.6 m, verticals perfectly corrected, 24mm tilt-shift lens, f/8, straight converging-free verticals. Golden hour sun low from the west raking across the façade, warm interior lights glowing, soft sky fill. Physically accurate materials: honed travertine, board-formed concrete, bronze-tinted glazing with real reflections, natural timber. Photorealistic high-end architectural photography, warm golden highlights, clean neutral midtones, cool sky gradient, gentle contrast, palette: travertine beige, sand gold, bronze glass, deep sea teal, warm white interior light. Low motion intensity, temporally consistent, no flicker, stable identity and geometry from first to last frame, 5-second shot.",
+      "negative_prompt": "blurry, low resolution, distorted anatomy, extra limbs or fingers, warped text, watermark, logo artifacts, oversaturated colors, warped or bent verticals, impossible geometry, melting or merging structures, floating buildings, distorted windows, extra floors, people with distorted faces, fisheye distortion, text overlays, lens flare streaks, crowds, cars in frame, identity drift, changing face or hairstyle, changing wardrobe",
+      "params": {
+        "aspect_ratio": "16:9",
+        "duration": 5.0,
+        "fps": 30
+      },
+      "vo": "",
+      "sfx": "footsteps on gravel",
+      "transition_out": "cut on action",
+      "qc": {
+        "score": 100,
+        "grade": "A",
+        "ready": true,
+        "issues": []
+      }
+    },
+    {
+      "id": "S03",
+      "scene": "SC1",
+      "beat": "threshold",
+      "start": 10.0,
+      "duration": 5.0,
+      "camera": [
+        "steadicam"
+      ],
+      "keyframe_prompt": "The double-height entrance hall of a two-storey contemporary villa of honed beige travertine and board-formed white concrete, with full-height bronze-tinted glazing, a cantilevered roof slab and a 25 m infinity pool facing the sea, on the Saadiyat Island coast, sunlight falling through a timber screen, interior of the villa, entrance hall. Two-point perspective, horizon at one third, building occupying the golden section with landscape leading lines, eye-level camera at 1.6 m, verticals perfectly corrected, 35mm lens, f/5.6, verticals corrected, natural interior perspective. Golden hour sun low from the west raking across the façade, warm interior lights glowing, soft sky fill. Physically accurate materials: honed travertine, board-formed concrete, bronze-tinted glazing with real reflections, natural timber. Photorealistic high-end architectural photography, warm golden highlights, clean neutral midtones, cool sky gradient, gentle contrast, palette: travertine beige, sand gold, bronze glass, deep sea teal, warm white interior light.",
+      "video_prompt": "Smooth steadicam move, floating stabilised camera gliding through the space: the double-height entrance hall of a two-storey contemporary villa of honed beige travertine and board-formed white concrete, with full-height bronze-tinted glazing, a cantilevered roof slab and a 25 m infinity pool facing the sea, on the Saadiyat Island coast, sunlight falling through a timber screen, bands of light and shadow slide across the floor as the camera glides forward. Interior of the villa, entrance hall. Two-point perspective, horizon at one third, building occupying the golden section with landscape leading lines, eye-level camera at 1.6 m, verticals perfectly corrected, 35mm lens, f/5.6, verticals corrected, natural interior perspective. Golden hour sun low from the west raking across the façade, warm interior lights glowing, soft sky fill. Physically accurate materials: honed travertine, board-formed concrete, bronze-tinted glazing with real reflections, natural timber. Photorealistic high-end architectural photography, warm golden highlights, clean neutral midtones, cool sky gradient, gentle contrast, palette: travertine beige, sand gold, bronze glass, deep sea teal, warm white interior light. Low motion intensity, temporally consistent, no flicker, stable identity and geometry from first to last frame, 5-second shot.",
+      "negative_prompt": "blurry, low resolution, distorted anatomy, extra limbs or fingers, warped text, watermark, logo artifacts, oversaturated colors, warped or bent verticals, impossible geometry, melting or merging structures, floating buildings, distorted windows, extra floors, people with distorted faces, fisheye distortion, text overlays, lens flare streaks, crowds, cars in frame, identity drift, changing face or hairstyle, changing wardrobe",
+      "params": {
+        "aspect_ratio": "16:9",
+        "duration": 5.0,
+        "fps": 30
+      },
+      "vo": "",
+      "sfx": "soft room tone",
+      "transition_out": "cut on action",
+      "qc": {
+        "score": 100,
+        "grade": "A",
+        "ready": true,
+        "issues": []
+      }
+    },
+    {
+      "id": "S04",
+      "scene": "SC1",
+      "beat": "flow",
+      "start": 15.0,
+      "duration": 5.0,
+      "camera": [
+        "parallax"
+      ],
+      "keyframe_prompt": "The living room of a two-storey contemporary villa of honed beige travertine and board-formed white concrete, with full-height bronze-tinted glazing, a cantilevered roof slab and a 25 m infinity pool facing the sea, on the Saadiyat Island coast opening onto the pool terrace through sliding bronze glass, the main living space with the sea beyond. Two-point perspective, horizon at one third, building occupying the golden section with landscape leading lines, eye-level camera at 1.6 m, verticals perfectly corrected, 35mm lens, f/5.6, verticals corrected, natural interior perspective. Golden hour sun low from the west raking across the façade, warm interior lights glowing, soft sky fill. Physically accurate materials: honed travertine, board-formed concrete, bronze-tinted glazing with real reflections, natural timber. Photorealistic high-end architectural photography, warm golden highlights, clean neutral midtones, cool sky gradient, gentle contrast, palette: travertine beige, sand gold, bronze glass, deep sea teal, warm white interior light.",
+      "video_prompt": "Slow lateral parallax slide past layered foreground elements, strong depth separation: the living room of a two-storey contemporary villa of honed beige travertine and board-formed white concrete, with full-height bronze-tinted glazing, a cantilevered roof slab and a 25 m infinity pool facing the sea, on the Saadiyat Island coast opening onto the pool terrace through sliding bronze glass, sheer curtains drift gently in the breeze. The main living space with the sea beyond. Two-point perspective, horizon at one third, building occupying the golden section with landscape leading lines, eye-level camera at 1.6 m, verticals perfectly corrected, 35mm lens, f/5.6, verticals corrected, natural interior perspective. Golden hour sun low from the west raking across the façade, warm interior lights glowing, soft sky fill. Physically accurate materials: honed travertine, board-formed concrete, bronze-tinted glazing with real reflections, natural timber. Photorealistic high-end architectural photography, warm golden highlights, clean neutral midtones, cool sky gradient, gentle contrast, palette: travertine beige, sand gold, bronze glass, deep sea teal, warm white interior light. Low motion intensity, temporally consistent, no flicker, stable identity and geometry from first to last frame, 5-second shot.",
+      "negative_prompt": "blurry, low resolution, distorted anatomy, extra limbs or fingers, warped text, watermark, logo artifacts, oversaturated colors, warped or bent verticals, impossible geometry, melting or merging structures, floating buildings, distorted windows, extra floors, people with distorted faces, fisheye distortion, text overlays, lens flare streaks, crowds, cars in frame, identity drift, changing face or hairstyle, changing wardrobe",
+      "params": {
+        "aspect_ratio": "16:9",
+        "duration": 5.0,
+        "fps": 30
+      },
+      "vo": "Every room faces the water.",
+      "sfx": "",
+      "transition_out": "cut on action",
+      "qc": {
+        "score": 100,
+        "grade": "A",
+        "ready": true,
+        "issues": []
+      }
+    },
+    {
+      "id": "S05",
+      "scene": "SC1",
+      "beat": "detail",
+      "start": 20.0,
+      "duration": 5.0,
+      "camera": [
+        "push_in"
+      ],
+      "keyframe_prompt": "A macro of honed travertine meeting bronze glass at a door frame of a two-storey contemporary villa of honed beige travertine and board-formed white concrete, with full-height bronze-tinted glazing, a cantilevered roof slab and a 25 m infinity pool facing the sea, on the Saadiyat Island coast, detail of the villa's materials. Two-point perspective, horizon at one third, building occupying the golden section with landscape leading lines, eye-level camera at 1.6 m, verticals perfectly corrected, 35mm lens, f/5.6, verticals corrected, natural interior perspective. Golden hour sun low from the west raking across the façade, warm interior lights glowing, soft sky fill. Physically accurate materials: honed travertine, board-formed concrete, bronze-tinted glazing with real reflections, natural timber. Photorealistic high-end architectural photography, warm golden highlights, clean neutral midtones, cool sky gradient, gentle contrast, palette: travertine beige, sand gold, bronze glass, deep sea teal, warm white interior light.",
+      "video_prompt": "Slow subtle push in, barely perceptible forward creep: a macro of honed travertine meeting bronze glass at a door frame of a two-storey contemporary villa of honed beige travertine and board-formed white concrete, with full-height bronze-tinted glazing, a cantilevered roof slab and a 25 m infinity pool facing the sea, on the Saadiyat Island coast, a single ray of sun slowly crosses the stone grain. Detail of the villa's materials. Two-point perspective, horizon at one third, building occupying the golden section with landscape leading lines, eye-level camera at 1.6 m, verticals perfectly corrected, 35mm lens, f/5.6, verticals corrected, natural interior perspective. Golden hour sun low from the west raking across the façade, warm interior lights glowing, soft sky fill. Physically accurate materials: honed travertine, board-formed concrete, bronze-tinted glazing with real reflections, natural timber. Photorealistic high-end architectural photography, warm golden highlights, clean neutral midtones, cool sky gradient, gentle contrast, palette: travertine beige, sand gold, bronze glass, deep sea teal, warm white interior light. Low motion intensity, temporally consistent, no flicker, stable identity and geometry from first to last frame, 5-second shot.",
+      "negative_prompt": "blurry, low resolution, distorted anatomy, extra limbs or fingers, warped text, watermark, logo artifacts, oversaturated colors, warped or bent verticals, impossible geometry, melting or merging structures, floating buildings, distorted windows, extra floors, people with distorted faces, fisheye distortion, text overlays, lens flare streaks, crowds, cars in frame, identity drift, changing face or hairstyle, changing wardrobe",
+      "params": {
+        "aspect_ratio": "16:9",
+        "duration": 5.0,
+        "fps": 30
+      },
+      "vo": "",
+      "sfx": "a faint high shimmer",
+      "transition_out": "cut on action",
+      "qc": {
+        "score": 100,
+        "grade": "A",
+        "ready": true,
+        "issues": []
+      }
+    },
+    {
+      "id": "S06",
+      "scene": "SC1",
+      "beat": "life",
+      "start": 25.0,
+      "duration": 5.0,
+      "camera": [
+        "tracking"
+      ],
+      "keyframe_prompt": "A woman in her thirties in a loose ivory linen dress, barefoot, seen at a distance, never facing the camera walking along the pool edge of a two-storey contemporary villa of honed beige travertine and board-formed white concrete, with full-height bronze-tinted glazing, a cantilevered roof slab and a 25 m infinity pool facing the sea, on the Saadiyat Island coast, small in frame, the infinity pool terrace. Two-point perspective, horizon at one third, building occupying the golden section with landscape leading lines, eye-level camera at 1.6 m, verticals perfectly corrected, 24mm tilt-shift lens, f/8, straight converging-free verticals. Golden hour sun low from the west raking across the façade, warm interior lights glowing, soft sky fill. Physically accurate materials: honed travertine, board-formed concrete, bronze-tinted glazing with real reflections, natural timber. Photorealistic high-end architectural photography, warm golden highlights, clean neutral midtones, cool sky gradient, gentle contrast, palette: travertine beige, sand gold, bronze glass, deep sea teal, warm white interior light.",
+      "video_prompt": "Slow tracking shot moving alongside the subject at matching speed, background streaming past: a woman in her thirties in a loose ivory linen dress, barefoot, seen at a distance, never facing the camera walking along the pool edge of a two-storey contemporary villa of honed beige travertine and board-formed white concrete, with full-height bronze-tinted glazing, a cantilevered roof slab and a 25 m infinity pool facing the sea, on the Saadiyat Island coast, small in frame, she trails her hand through the water, ripples spreading. The infinity pool terrace. Two-point perspective, horizon at one third, building occupying the golden section with landscape leading lines, eye-level camera at 1.6 m, verticals perfectly corrected, 24mm tilt-shift lens, f/8, straight converging-free verticals. Golden hour sun low from the west raking across the façade, warm interior lights glowing, soft sky fill. Physically accurate materials: honed travertine, board-formed concrete, bronze-tinted glazing with real reflections, natural timber. Photorealistic high-end architectural photography, warm golden highlights, clean neutral midtones, cool sky gradient, gentle contrast, palette: travertine beige, sand gold, bronze glass, deep sea teal, warm white interior light. Low motion intensity, temporally consistent, no flicker, stable identity and geometry from first to last frame, 5-second shot.",
+      "negative_prompt": "blurry, low resolution, distorted anatomy, extra limbs or fingers, warped text, watermark, logo artifacts, oversaturated colors, warped or bent verticals, impossible geometry, melting or merging structures, floating buildings, distorted windows, extra floors, people with distorted faces, fisheye distortion, text overlays, lens flare streaks, crowds, cars in frame, identity drift, changing face or hairstyle, changing wardrobe",
+      "params": {
+        "aspect_ratio": "16:9",
+        "duration": 5.0,
+        "fps": 30
+      },
+      "vo": "",
+      "sfx": "water lapping the pool edge",
+      "transition_out": "cut on action",
+      "qc": {
+        "score": 100,
+        "grade": "A",
+        "ready": true,
+        "issues": []
+      }
+    },
+    {
+      "id": "S07",
+      "scene": "SC1",
+      "beat": "hero",
+      "start": 30.0,
+      "duration": 5.0,
+      "camera": [
+        "crane_up"
+      ],
+      "keyframe_prompt": "A two-storey contemporary villa of honed beige travertine and board-formed white concrete, with full-height bronze-tinted glazing, a cantilevered roof slab and a 25 m infinity pool facing the sea, on the Saadiyat Island coast seen whole from above the garden, pool glowing, the full property as dusk falls over the coast. Two-point perspective, horizon at one third, building occupying the golden section with landscape leading lines, eye-level camera at 1.6 m, verticals perfectly corrected, 24mm tilt-shift lens, f/8, straight converging-free verticals. Dusk: the last warm glow on the horizon, deep blue sky, warm interior lights glowing through the bronze glazing, pool lights on. Physically accurate materials: honed travertine, board-formed concrete, bronze-tinted glazing with real reflections, natural timber. Photorealistic high-end architectural photography, warm golden highlights, clean neutral midtones, cool sky gradient, gentle contrast, palette: travertine beige, sand gold, bronze glass, deep sea teal, warm white interior light.",
+      "video_prompt": "Slow crane up, camera rising on a jib while tilting down to keep the subject framed: a two-storey contemporary villa of honed beige travertine and board-formed white concrete, with full-height bronze-tinted glazing, a cantilevered roof slab and a 25 m infinity pool facing the sea, on the Saadiyat Island coast seen whole from above the garden, pool glowing, the camera rises as warm interior lights glow through the glazing. The full property as dusk falls over the coast. Two-point perspective, horizon at one third, building occupying the golden section with landscape leading lines, eye-level camera at 1.6 m, verticals perfectly corrected, 24mm tilt-shift lens, f/8, straight converging-free verticals. Dusk: the last warm glow on the horizon, deep blue sky, warm interior lights glowing through the bronze glazing, pool lights on. Physically accurate materials: honed travertine, board-formed concrete, bronze-tinted glazing with real reflections, natural timber. Photorealistic high-end architectural photography, warm golden highlights, clean neutral midtones, cool sky gradient, gentle contrast, palette: travertine beige, sand gold, bronze glass, deep sea teal, warm white interior light. Low motion intensity, temporally consistent, no flicker, stable identity and geometry from first to last frame, 5-second shot.",
+      "negative_prompt": "blurry, low resolution, distorted anatomy, extra limbs or fingers, warped text, watermark, logo artifacts, oversaturated colors, warped or bent verticals, impossible geometry, melting or merging structures, floating buildings, distorted windows, extra floors, people with distorted faces, fisheye distortion, text overlays, lens flare streaks, crowds, cars in frame, identity drift, changing face or hairstyle, changing wardrobe",
+      "params": {
+        "aspect_ratio": "16:9",
+        "duration": 5.0,
+        "fps": 30
+      },
+      "vo": "Villa Saadiyat.",
+      "sfx": "a low swell",
+      "transition_out": "match cut",
+      "qc": {
+        "score": 100,
+        "grade": "A",
+        "ready": true,
+        "issues": []
+      }
+    },
+    {
+      "id": "S08",
+      "scene": "SC1",
+      "beat": "end_card",
+      "start": 35.0,
+      "duration": 5.0,
+      "camera": [
+        "static"
+      ],
+      "keyframe_prompt": "End card: the villa's line drawing and the words 'Villa Saadiyat — by appointment', a dark sand-coloured background. Two-point perspective, horizon at one third, building occupying the golden section with landscape leading lines, eye-level camera at 1.6 m, verticals perfectly corrected, 24mm tilt-shift lens, f/8, straight converging-free verticals. Golden hour sun low from the west raking across the façade, warm interior lights glowing, soft sky fill. Physically accurate materials: honed travertine, board-formed concrete, bronze-tinted glazing with real reflections, natural timber. Photorealistic high-end architectural photography, warm golden highlights, clean neutral midtones, cool sky gradient, gentle contrast, palette: travertine beige, sand gold, bronze glass, deep sea teal, warm white interior light.",
+      "video_prompt": "Locked-off static camera on a tripod, no camera movement: end card: the villa's line drawing and the words 'Villa Saadiyat — by appointment', the frame settles and holds, only the pool light shimmering. A dark sand-coloured background. Two-point perspective, horizon at one third, building occupying the golden section with landscape leading lines, eye-level camera at 1.6 m, verticals perfectly corrected, 24mm tilt-shift lens, f/8, straight converging-free verticals. Golden hour sun low from the west raking across the façade, warm interior lights glowing, soft sky fill. Physically accurate materials: honed travertine, board-formed concrete, bronze-tinted glazing with real reflections, natural timber. Photorealistic high-end architectural photography, warm golden highlights, clean neutral midtones, cool sky gradient, gentle contrast, palette: travertine beige, sand gold, bronze glass, deep sea teal, warm white interior light. Low motion intensity, temporally consistent, no flicker, stable identity and geometry from first to last frame, 5-second shot.",
+      "negative_prompt": "blurry, low resolution, distorted anatomy, extra limbs or fingers, warped text, watermark, logo artifacts, oversaturated colors, warped or bent verticals, impossible geometry, melting or merging structures, floating buildings, distorted windows, extra floors, people with distorted faces, fisheye distortion, text overlays, lens flare streaks, crowds, cars in frame",
+      "params": {
+        "aspect_ratio": "16:9",
+        "duration": 5.0,
+        "fps": 30
+      },
+      "vo": "",
+      "sfx": "the music resolves",
+      "transition_out": "dip to brand colour",
+      "qc": {
+        "score": 100,
+        "grade": "A",
+        "ready": true,
+        "issues": []
+      }
+    }
+  ],
+  "sequence_qc": {
+    "ready": true,
+    "total_seconds": 40.0,
+    "issues": []
+  },
+  "voiceover": {
+    "provider": "voice_studio",
+    "voice": "calm, warm female narrator",
+    "direction": "unhurried, intimate, slight smile, with a pause after each sentence",
+    "lines": [
+      {
+        "shot": "S01",
+        "start": 0.0,
+        "slot": 5.0,
+        "text": "Some places hold the light.",
+        "words": 5,
+        "estimated_seconds": 2.0,
+        "fits": true,
+        "fix": ""
+      },
+      {
+        "shot": "S04",
+        "start": 15.0,
+        "slot": 5.0,
+        "text": "Every room faces the water.",
+        "words": 5,
+        "estimated_seconds": 2.0,
+        "fits": true,
+        "fix": ""
+      },
+      {
+        "shot": "S07",
+        "start": 30.0,
+        "slot": 5.0,
+        "text": "Villa Saadiyat.",
+        "words": 2,
+        "estimated_seconds": 0.8,
+        "fits": true,
+        "fix": ""
+      }
+    ],
+    "script": "Some places hold the light. Every room faces the water. Villa Saadiyat."
+  },
+  "edl": [
+    {
+      "id": "S01",
+      "in": 0.0,
+      "out": 5.0,
+      "transition": "fade in from black"
+    },
+    {
+      "id": "S02",
+      "in": 5.0,
+      "out": 10.0,
+      "transition": "cut on action"
+    },
+    {
+      "id": "S03",
+      "in": 10.0,
+      "out": 15.0,
+      "transition": "cut on action"
+    },
+    {
+      "id": "S04",
+      "in": 15.0,
+      "out": 20.0,
+      "transition": "cut on action"
+    },
+    {
+      "id": "S05",
+      "in": 20.0,
+      "out": 25.0,
+      "transition": "cut on action"
+    },
+    {
+      "id": "S06",
+      "in": 25.0,
+      "out": 30.0,
+      "transition": "cut on action"
+    },
+    {
+      "id": "S07",
+      "in": 30.0,
+      "out": 35.0,
+      "transition": "match cut"
+    },
+    {
+      "id": "S08",
+      "in": 35.0,
+      "out": 40.0,
+      "transition": "dip to brand colour"
+    }
+  ]
+}

@@ -33,7 +33,20 @@ approved first, and sound stays free.
 | **Motion engine** | the original Katana-style engine: beat-locked hard cuts, slam type, slash transitions and post FX, now at 16:9, 9:16, 1:1 or 4:5 |
 | **17 slash commands** | `/catana:hero-shot`, `/catana:ugc-video`, `/catana:video-director`, `/catana:storyboard`, `/catana:architecture-film`, … ([all commands](docs/COMMANDS.md)) |
 
-## Demo (motion engine)
+## Samples
+
+**"CATANA 2.0": one scene file, three formats.** 15 s, rendered locally by the motion engine at 16:9, 9:16 and 1:1
+(SFX only, no credits used). Source and render steps: [examples/catana-2-promo](examples/catana-2-promo/).
+
+| 16:9 | 9:16 | 1:1 |
+|---|---|---|
+| [![16:9](media/catana-2-sample-16x9.gif)](media/catana-2-sample-16x9.mp4) | [![9:16](media/catana-2-sample-9x16.gif)](media/catana-2-sample-9x16.mp4) | [![1:1](media/catana-2-sample-1x1.gif)](media/catana-2-sample-1x1.mp4) |
+
+**AI Director production pack.** "A luxury cinematic commercial for a modern villa in Abu Dhabi", 40 s. Includes the
+concept, continuity bible, 8 shots with keyframe and video prompts, a dusk transition, VO and an edit list. All shots
+grade A. See [examples/villa-commercial/storyboard.md](examples/villa-commercial/storyboard.md).
+
+## Demo (motion engine, v1)
 
 Two test films made with the motion engine from a one-paragraph brief (the brands are fictional). The GIFs are silent
 previews; click through for the MP4 with sound.

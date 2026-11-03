@@ -90,7 +90,7 @@ match cut, establish/opening → fade in from black, end_card → dip to brand c
     "products":   {"aurora": "..."},                     // @aurora
     "locations":  {"villa": "..."},                      // @villa
     "style": "...", "grade": "...", "palette": "...",    // style/grade override every shot's style/colour
-    "lens_package": "...", "lighting": "...",            // defaults for every shot (shot.lighting overrides)
+    "lens_package": "...", "lighting": "...",            // defaults for every shot (shot.lens / shot.lighting override)
     "negative": ["..."]                                  // merged into every shot
   },
   "sound": {"music": "", "sfx_style": "", "vo_voice": "", "vo_direction": "", "provider": "voice_studio"},
@@ -100,7 +100,7 @@ match cut, establish/opening → fade in from black, end_card → dip to brand c
      "camera_moves": [{"id": "aerial_reveal", "speed": "slow"}],   // ids from data/camera_movements.json; speed slow|medium|fast
      "characters": [], "references": [],                           // [{"source": "render.png", "role": "first_frame", "preserve": [...]}]
      "vo": "", "sfx": "", "transition_out": "fade in from black",
-     "lighting": "", "time_of_day": "", "notes": ""}                // optional per-shot overrides
+     "lens": "", "lighting": "", "time_of_day": "", "notes": ""}    // optional per-shot overrides
   ]}],
   "edit": {"sequence": ["S01", "..."], "notes": ""}
 }

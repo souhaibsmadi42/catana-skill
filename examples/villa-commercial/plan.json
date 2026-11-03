@@ -1,0 +1,229 @@
+{
+  "title": "Villa Saadiyat — Where the Light Lives",
+  "idea": "Create a luxury cinematic commercial for a modern villa in Abu Dhabi",
+  "domain": "architecture",
+  "platform": null,
+  "aspect_ratio": "16:9",
+  "duration": 40.0,
+  "fps": 30,
+  "concept": "The villa is presented through light, not features. Every shot follows the same low golden sun as it travels from the coast, across the façade and through the house, ending as the interior lights take over at dusk. The motif is a slow reveal from behind a natural layer: dune grass, palm fronds, a timber screen.",
+  "visual_direction": "Calm, architectural, unhurried. One slow camera move per shot, corrected verticals, 24mm tilt-shift for exteriors and 35mm for interiors. Warm golden highlights over clean neutral midtones, with travertine, timber and bronze glass as the hero materials. No fast cuts and no lens flares beyond natural sun glints. People appear small and unposed.",
+  "logline": "A day of light moves through a modern Abu Dhabi villa, from the dunes at golden hour to a quiet terrace at dusk.",
+  "bible": {
+    "characters": {
+      "guest": "a woman in her thirties in a loose ivory linen dress, barefoot, seen at a distance, never facing the camera"
+    },
+    "products": {},
+    "locations": {
+      "villa": "a two-storey contemporary villa of honed beige travertine and board-formed white concrete, with full-height bronze-tinted glazing, a cantilevered roof slab and a 25 m infinity pool facing the sea, on the Saadiyat Island coast"
+    },
+    "style": "photorealistic high-end architectural photography",
+    "grade": "warm golden highlights, clean neutral midtones, cool sky gradient, gentle contrast",
+    "palette": "travertine beige, sand gold, bronze glass, deep sea teal, warm white interior light",
+    "lens_package": "24mm tilt-shift lens, f/8, straight converging-free verticals",
+    "lighting": "golden hour sun low from the west raking across the façade, warm interior lights glowing, soft sky fill",
+    "negative": [
+      "text overlays",
+      "lens flare streaks",
+      "crowds",
+      "cars in frame"
+    ]
+  },
+  "sound": {
+    "music": "user-supplied ambient piano track, 70 BPM (CATANA does not generate music)",
+    "sfx_style": "soft wind over dunes, palm rustle, water lapping the pool edge, one low swell on the hero reveal",
+    "vo_voice": "calm, warm female narrator",
+    "vo_direction": "unhurried, intimate, slight smile, with a pause after each sentence",
+    "provider": "voice_studio"
+  },
+  "scenes": [
+    {
+      "id": "SC1",
+      "name": "a day of light",
+      "shots": [
+        {
+          "id": "S01",
+          "beat": "establish",
+          "purpose": "the location at scale",
+          "duration": 5.0,
+          "subject": "a modern villa @villa seen from beyond the dunes at the edge of the sea",
+          "action": "the camera rises over a ridge of dune grass as the sea wind bends the grass",
+          "environment": "dunes and sea on the Saadiyat Island coast at golden hour",
+          "camera_moves": [
+            {
+              "id": "aerial_reveal",
+              "speed": "slow"
+            }
+          ],
+          "characters": [],
+          "vo": "Some places hold the light.",
+          "sfx": "wind over the dunes",
+          "transition_out": "fade in from black",
+          "references": []
+        },
+        {
+          "id": "S02",
+          "beat": "approach",
+          "purpose": "arriving at the entrance",
+          "duration": 5.0,
+          "subject": "the entrance of @villa, a pivoting timber door under the cantilevered roof",
+          "action": "palm shadows sway slowly across the travertine path",
+          "environment": "a gravel forecourt lined with date palms",
+          "camera_moves": [
+            {
+              "id": "dolly_in",
+              "speed": "slow"
+            }
+          ],
+          "characters": [],
+          "vo": "",
+          "sfx": "footsteps on gravel",
+          "transition_out": "cut on action",
+          "references": []
+        },
+        {
+          "id": "S03",
+          "beat": "threshold",
+          "purpose": "crossing into the interior",
+          "duration": 5.0,
+          "subject": "the double-height entrance hall of @villa, sunlight falling through a timber screen",
+          "action": "bands of light and shadow slide across the floor as the camera glides forward",
+          "environment": "interior of the villa, entrance hall",
+          "camera_moves": [
+            {
+              "id": "steadicam",
+              "speed": "slow"
+            }
+          ],
+          "characters": [],
+          "vo": "",
+          "sfx": "soft room tone",
+          "transition_out": "cut on action",
+          "references": [],
+          "lens": "35mm lens, f/5.6, verticals corrected, natural interior perspective"
+        },
+        {
+          "id": "S04",
+          "beat": "flow",
+          "purpose": "the main living space and its light",
+          "duration": 5.0,
+          "subject": "the living room of @villa opening onto the pool terrace through sliding bronze glass",
+          "action": "sheer curtains drift gently in the breeze",
+          "environment": "the main living space with the sea beyond",
+          "camera_moves": [
+            {
+              "id": "parallax",
+              "speed": "slow"
+            }
+          ],
+          "characters": [],
+          "vo": "Every room faces the water.",
+          "sfx": "",
+          "transition_out": "cut on action",
+          "references": [],
+          "lens": "35mm lens, f/5.6, verticals corrected, natural interior perspective"
+        },
+        {
+          "id": "S05",
+          "beat": "detail",
+          "purpose": "a signature material or junction",
+          "duration": 5.0,
+          "subject": "a macro of honed travertine meeting bronze glass at a door frame of @villa",
+          "action": "a single ray of sun slowly crosses the stone grain",
+          "environment": "detail of the villa's materials",
+          "camera_moves": [
+            {
+              "id": "push_in",
+              "speed": "slow"
+            }
+          ],
+          "characters": [],
+          "vo": "",
+          "sfx": "a faint high shimmer",
+          "transition_out": "cut on action",
+          "references": [],
+          "lens": "35mm lens, f/5.6, verticals corrected, natural interior perspective"
+        },
+        {
+          "id": "S06",
+          "beat": "life",
+          "purpose": "a human moment that sells the lifestyle",
+          "duration": 5.0,
+          "subject": "@guest walking along the pool edge of @villa, small in frame",
+          "action": "she trails her hand through the water, ripples spreading",
+          "environment": "the infinity pool terrace",
+          "camera_moves": [
+            {
+              "id": "tracking",
+              "speed": "slow"
+            }
+          ],
+          "characters": [
+            "guest"
+          ],
+          "vo": "",
+          "sfx": "water lapping the pool edge",
+          "transition_out": "cut on action",
+          "references": []
+        },
+        {
+          "id": "S07",
+          "beat": "hero",
+          "purpose": "the hero wide view of the whole property",
+          "duration": 5.0,
+          "subject": "@villa seen whole from above the garden, pool glowing",
+          "action": "the camera rises as warm interior lights glow through the glazing",
+          "environment": "the full property as dusk falls over the coast",
+          "camera_moves": [
+            {
+              "id": "crane_up",
+              "speed": "slow"
+            }
+          ],
+          "characters": [],
+          "vo": "Villa Saadiyat.",
+          "sfx": "a low swell",
+          "transition_out": "match cut",
+          "references": [],
+          "lighting": "dusk: the last warm glow on the horizon, deep blue sky, warm interior lights glowing through the bronze glazing, pool lights on",
+          "time_of_day": "blue_hour",
+          "notes": "deliberate transition: golden hour gives way to dusk on the hero shot"
+        },
+        {
+          "id": "S08",
+          "beat": "end_card",
+          "purpose": "logo / address / call to action",
+          "duration": 5.0,
+          "subject": "end card: the villa's line drawing and the words 'Villa Saadiyat — by appointment'",
+          "action": "the frame settles and holds, only the pool light shimmering",
+          "environment": "a dark sand-coloured background",
+          "camera_moves": [
+            {
+              "id": "static",
+              "speed": "slow"
+            }
+          ],
+          "characters": [],
+          "vo": "",
+          "sfx": "the music resolves",
+          "transition_out": "dip to brand colour",
+          "references": [],
+          "time_of_day": "blue_hour"
+        }
+      ]
+    }
+  ],
+  "edit": {
+    "sequence": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05",
+      "S06",
+      "S07",
+      "S08"
+    ],
+    "notes": "Cut on the music phrase; hold S07 for the full swell; dip to sand colour into the end card."
+  }
+}

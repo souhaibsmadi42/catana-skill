@@ -1,5 +1,5 @@
 // Katana kit: beat grid, shot containers, slam type, counters, slash line, HUD. Everything is a pure function of t.
-import { FILM, h, s, attr, show, tf, txt, Ease, clamp, lerp, fmtN } from './lib.js';
+import { FILM, U, h, s, attr, show, tf, txt, Ease, clamp, lerp, fmtN } from './lib.js';
 
 // ------------------------------------------------------------------ beat grid
 // B(k) = start time of beat k (fractional beats allowed: B(12.5) is the "and" of beat 12). Write every cue in beats.
@@ -41,6 +41,9 @@ export function drift(el, lt, z0 = 1, z1 = 1.05, dx = 0, dy = 0, dur = 2) {
 }
 
 // ------------------------------------------------------------------ type
+// fit: Anton font size that keeps `str` inside `frac` of the frame width (width ≈ chars × 0.45 × size), capped at
+// `max` px (scaled by U). Use it for every DISPLAY word so the same scene works at 16:9, 9:16, 1:1 and 4:5.
+export const fit = (str, max, frac = 0.86) => Math.round(Math.min(max * U, (FILM.W * frac) / (Math.max(1, String(str).replace(/<[^>]+>/g, '').length) * 0.45))) + 'px';
 export function T(parent, html, css = {}, cls = 'k anton') {
   const e = h('div', cls, parent, Object.assign({ left: '0', top: '0' }, css), html);
   e.style.visibility = 'hidden';
@@ -112,7 +115,7 @@ export function drawSlash(t) {
     const dt = t - e.t;
     if (dt < -e.lead || dt > 0.14) continue;
     any = true;
-    const L = 2600, dx = Math.cos(e.ang), dy = Math.sin(e.ang);
+    const L = Math.hypot(FILM.W, FILM.H) * 1.25, dx = Math.cos(e.ang), dy = Math.sin(e.ang);
     let a0 = -L / 2, a1;
     if (dt < 0) a1 = lerp(-L / 2, L / 2, Ease.inQ(clamp((dt + e.lead) / e.lead)));
     else { a1 = L / 2; a0 = lerp(-L / 2, L / 2, Ease.outQ(clamp(dt / 0.14))); }

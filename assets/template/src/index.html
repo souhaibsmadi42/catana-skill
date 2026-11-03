@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
+<link rel="icon" href="data:,">
 <title>Katana film</title>
 <link rel="stylesheet" href="style.css">
 <script type="importmap">{"imports":{"three":"../node_modules/three/build/three.module.js","three/addons/":"../node_modules/three/examples/jsm/"}}</script>
@@ -9,13 +10,13 @@
 <body>
 <div id="stage">
   <div id="gl" class="layer"></div>            <!-- optional three.js world (world3d.js) -->
-  <svg id="dw" class="layer" width="1920" height="1080"></svg>   <!-- drawings / vector art -->
+  <svg id="dw" class="layer"></svg>   <!-- drawings / vector art -->
   <div id="ui" class="layer"></div>            <!-- rebuilt product UI, screenshots -->
   <div id="kt" class="layer"></div>            <!-- kinetic type (shot roots) -->
-  <svg id="ov" class="layer" width="1920" height="1080"></svg>   <!-- overlays: slash line, logo strokes -->
+  <svg id="ov" class="layer"></svg>   <!-- overlays: slash line, logo strokes -->
   <div id="hud" class="layer"></div>
 </div>
-<canvas id="post" width="1920" height="1080"></canvas>
+<canvas id="post"></canvas>   <!-- sized from FILM by main.js -->
 <script type="module" src="main.js"></script>
 </body>
 </html>

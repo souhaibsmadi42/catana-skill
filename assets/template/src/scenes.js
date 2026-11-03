@@ -1,13 +1,16 @@
 // DEMO EDIT (12 s @ 120 BPM = 24 beats). Replace with the real shot plan; keep the patterns:
 //   * every cue in beats via B(k)        * one shot = one container, built in init, animated in update(t, lt)
 //   * post FX + audio events pushed at init (hit/slash/whip... + ev())   * gradeAt(t) for per-section grade
-import { h, s, attr, show, tf, txt, Ease, clamp, lerp, kf, fmtN } from './lib.js';
-import { B, shot, runShots, drift, T, slam, maskLine, rise, track, echo, counter, typed, drawOn, initSlash, addSlashLine, drawSlash, SLASHES, initHud, hud } from './kit.js';
-import { hit, flash, whip, slash, glitch, invert, punch, rumble, caRamp } from './post.js';
+//   * layout through W/H, vx/vy (fraction of frame), px (scaled px) and fit() so any FILM format works
+import { W, H, PORTRAIT, px, vx, vy, h, s, show, tf, Ease, clamp, lerp } from './lib.js';
+import { B, BEAT, shot, runShots, drift, T, fit, slam, maskLine, rise, track, echo, counter, typed, drawOn, initSlash, addSlashLine, drawSlash, SLASHES, initHud, hud } from './kit.js';
+import { hit, flash, whip, slash, glitch, invert, punch, rumble } from './post.js';
 
 const BRAND = 'BRAND';                      // the real wordmark text
 const ER = [];                              // audio cue list -> build/events.json -> audio/mix.py
 const ev = (t, kind, k = 1) => ER.push({ t: +t.toFixed(4), kind, k });
+const full = { left: '0', width: W + 'px', textAlign: 'center' };   // a centred full-width line
+const STACK = W / H < 1.3;                  // 1:1, 4:5, 9:16 -> stack side-by-side layouts vertically
 
 export function gradeAt(t) {                // base values for the finishing pass (grain, vignette, contrast, sat, bx...)
   return {};
@@ -20,27 +23,32 @@ export async function initScenes() {
   // ---- cold open: hairline + staccato words (beats 0–7)
   {
     const S = shot(0, B(8));
-    S.line = h('div', null, S.root, { position: 'absolute', left: '960px', top: '540px', height: '1px', width: '0', background: 'var(--ink)' });
-    S.w = ['ONE', 'PRODUCT.', 'ZERO', 'FRICTION.'].map((w, i) => T(S.root, w, { left: '0', top: '360px', width: '1920px', textAlign: 'center', fontSize: i % 2 ? '330px' : '420px', color: 'var(--ink)' }));
-    S.lab = T(S.root, '', { left: '0', top: '760px', width: '1920px', textAlign: 'center' }, 'kmono');
+    S.line = h('div', null, S.root, { position: 'absolute', left: vx(0.5), top: vy(0.5), height: '1px', width: '0', background: 'var(--ink)' });
+    S.w = ['ONE', 'PRODUCT.', 'ZERO', 'FRICTION.'].map(w => T(S.root, w, { ...full, top: vy(0.5), fontSize: fit(w, 420), color: 'var(--ink)' }));
+    S.w.forEach(e => (e.style.transform = 'translateY(-50%)'));
+    S.lab = T(S.root, '', { ...full, top: vy(0.72) }, 'kmono');
     S.update = (t, lt) => {
-      const w = 40 + 600 * Ease.outQ(clamp(lt / 1.9));
-      S.line.style.left = (960 - w / 2) + 'px'; S.line.style.width = w + 'px';
+      const w = (0.02 + 0.31 * Ease.outQ(clamp(lt / 1.9))) * W;
+      S.line.style.left = (W - w) / 2 + 'px'; S.line.style.width = w + 'px';
       show(S.line, t < B(2) ? 1 : 0);
-      [2, 3, 5, 6].forEach((k, i) => slam(S.w[i], t, B(k), B(k + 1), { s0: 1.25, d: 0.18 }));
+      [2, 3, 5, 6].forEach((k, i) => slam(S.w[i], t, B(k), B(k + 1), { s0: 1.25, d: 0.18, base: 'translateY(-50%)' }));
       typed(S.lab, t, B(1), 'LOADING THE STORY…', 0.06);
     };
     [2, 3, 5, 6].forEach(k => { hit(B(k), 0.7); ev(B(k), 'hitS', 0.7); });
-    for (let i = 0; i < 4; i++) invert(B(7) + i * 0.125, 2 / 60);
-    rumble(B(7), BEAT_(1), 1.2); ev(B(7), 'riser', 1);
+    for (let i = 0; i < 4; i++) invert(B(7) + i * (BEAT / 4), 2 / 60);
+    rumble(B(7), BEAT, 1.2); ev(B(7), 'riser', 1);
     addSlashLine(B(8));
   }
-  // ---- slash -> logo lockup (beats 8–11)
+  // ---- slash -> logo lockup (beats 8–11): mark beside the wordmark (wide frames) or above it (STACK)
   {
     const S = shot(B(8), B(12), { svg: 'ov' });
-    const mark = s('rect', { x: 510, y: 440, width: 200, height: 200, rx: 40, fill: 'none', stroke: 'url(#slg)', 'stroke-width': 18, pathLength: 1, 'stroke-dasharray': '1 1' }, S.svg);
-    S.word = T(S.root, `<span class="kgrad">${BRAND}</span>`, { left: '760px', top: '430px', fontSize: '200px', fontFamily: 'Inter', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: '1.1' }, 'k');
-    S.sub = T(S.root, 'THE TAGLINE GOES HERE', { left: '770px', top: '680px', fontSize: '22px', color: 'var(--ink)', letterSpacing: '.3em' }, 'kmono');
+    const m = 200 * Math.min(1, W / 1080);
+    const mx = STACK ? (W - m) / 2 : W * 0.27, my = STACK ? H * 0.3 : (H - m) / 2;
+    const mark = s('rect', { x: mx, y: my, width: m, height: m, rx: m / 5, fill: 'none', stroke: 'url(#slg)', 'stroke-width': m * 0.09, pathLength: 1, 'stroke-dasharray': '1 1' }, S.svg);
+    const wcss = STACK ? { ...full, top: px(0) } : { left: (mx + m + 50) + 'px', top: '0' };
+    S.word = T(S.root, `<span class="kgrad">${BRAND}</span>`, { ...wcss, top: STACK ? (my + m + 60) + 'px' : (H / 2 - 110 * Math.min(1, W / 1920)) + 'px', fontSize: Math.round(200 * Math.min(1, W / 1300)) + 'px', fontFamily: 'Inter', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: '1.1' }, 'k');
+    S.sub = T(S.root, 'THE TAGLINE GOES HERE', STACK ? { ...full, top: (my + m + 320) + 'px', fontSize: px(22), color: 'var(--ink)', letterSpacing: '.3em' }
+      : { left: (mx + m + 60) + 'px', top: (H / 2 + 140) + 'px', fontSize: px(22), color: 'var(--ink)', letterSpacing: '.3em' }, 'kmono');
     S.update = (t, lt) => {
       drift(S.root, lt, 1, 1.04, 0, 0, 2);
       drawOn(mark, Ease.outQ(clamp(lt / 0.35)));
@@ -53,26 +61,30 @@ export async function initScenes() {
   // ---- proof number (beats 12–15)
   {
     const S = shot(B(12), B(16));
-    S.n = T(S.root, '0', { left: '0', top: '250px', width: '1920px', textAlign: 'center', fontSize: '480px', color: 'var(--ink)' });
-    S.l = T(S.root, 'THINGS COUNTED AUTOMATICALLY', { left: '0', top: '720px', width: '1920px', textAlign: 'center', color: 'var(--ink)', fontSize: '20px' }, 'kmono');
-    S.update = (t, lt) => {
-      slam(S.n, t, B(12), B(16), { s0: 1.2 });
+    const nfs = parseInt(fit('12,480', 480)), cy = H * 0.45;          // label sits under the number at any format
+    S.n = T(S.root, '0', { ...full, top: cy + 'px', fontSize: nfs + 'px', color: 'var(--ink)' });
+    S.l = T(S.root, 'THINGS COUNTED AUTOMATICALLY', { ...full, top: (cy + nfs * 0.5 + 60) + 'px', color: 'var(--ink)', fontSize: px(20) }, 'kmono');
+    S.update = (t) => {
       counter(S.n, t, B(12), B(12) + 0.6, 0, 12480);
-      tf(S.n, `scale(${(1 + 0.04 * (1 - clamp(((t - B(12)) % 0.5) / 0.3))).toFixed(3)})`);
+      const kick = 1 + 0.04 * (1 - clamp(((t - B(12)) % 0.5) / 0.3));
+      slam(S.n, t, B(12), B(16), { s0: 1.2, base: `translateY(-50%) scale(${kick.toFixed(3)})` });
       slam(S.l, t, B(13), B(16), { s0: 1.05 });
     };
     hit(B(12), 1); ev(B(12), 'impact', 1); for (let k = 13; k < 16; k++) { punch(B(k), 0.02); ev(B(k), 'tick', 0.5); }
-    whip(B(16) - 0.16, 0.32, 0, 1); ev(B(16) - 0.16, 'whoosh', 1);
+    whip(B(16) - 0.16, 0.32, PORTRAIT ? Math.PI / 2 : 0, 1); ev(B(16) - 0.16, 'whoosh', 1);
   }
-  // ---- feature stack + UI card (beats 16–19)
+  // ---- feature stack + UI card (beats 16–19): words left / card right, or words top / card bottom (STACK)
   {
     const S = shot(B(16), B(20), { ui: true });
-    S.card = h('div', 'ui', S.ui, { left: '1080px', top: '300px', width: '640px', padding: '28px', background: '#14141F', border: '1px solid #2A2A3E', borderRadius: '14px' },
+    const fs = Math.min(parseInt(fit('CLEAR.', 250, STACK ? 0.8 : 0.45)), Math.round(H * 0.2)) + 'px';
+    const x0 = STACK ? vx(0.1) : vx(0.057), lh = parseInt(fs), y0 = STACK ? H * 0.12 : H * 0.16;
+    const cw = Math.min(640, W * 0.82);
+    S.card = h('div', 'ui', S.ui, { left: STACK ? ((W - cw) / 2) + 'px' : vx(0.56), top: STACK ? (y0 + 3 * lh + 40) + 'px' : vy(0.28), width: cw + 'px', padding: '28px', background: '#14141F', border: '1px solid #2A2A3E', borderRadius: '14px' },
       `<div class="kmono" style="position:static">FEATURE</div><div style="font-size:34px;font-weight:700;margin-top:10px">Real UI goes here</div>
        <div style="margin-top:22px;height:8px;border-radius:4px;background:#26263A"><div data-bar style="height:8px;width:0;border-radius:4px;background:linear-gradient(90deg,var(--hot),var(--hot2))"></div></div>`);
     S.bar = S.card.querySelector('[data-bar]');
-    S.m = ['FAST.', 'CLEAR.', '<span class="kgrad">YOURS.</span>'].map((w, i) => maskLine(S.root, w, { left: '110px', top: `${170 + i * 250}px`, fontSize: '250px', color: 'var(--ink)' }));
-    S.e = T(S.root, 'YOURS.', { left: '110px', top: '670px', fontSize: '250px' }, 'k anton outline hot');
+    S.m = ['FAST.', 'CLEAR.', '<span class="kgrad">YOURS.</span>'].map((w, i) => maskLine(S.root, w, { left: x0, top: (y0 + i * lh) + 'px', fontSize: fs, color: 'var(--ink)' }));
+    S.e = T(S.root, 'YOURS.', { left: x0, top: (y0 + 2 * lh) + 'px', fontSize: fs }, 'k anton outline hot');
     S.update = (t, lt) => {
       tf(S.ui, `scale(${lerp(1, 1.06, lt / 2).toFixed(4)})`);
       S.bar.style.width = (100 * Ease.inOut(clamp(lt / 1.8))) + '%';
@@ -85,7 +97,7 @@ export async function initScenes() {
   // ---- outro (beats 20–23)
   {
     const S = shot(B(20), 99);
-    S.w = T(S.root, `<span class="kgrad">${BRAND}</span>`, { left: '0', top: '400px', width: '1920px', textAlign: 'center', fontSize: '220px', fontFamily: 'Inter', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: '1.1' }, 'k');
+    S.w = T(S.root, `<span class="kgrad">${BRAND}</span>`, { ...full, top: (H / 2 - 120 * Math.min(1, W / 1300)) + 'px', fontSize: Math.round(220 * Math.min(1, W / 1300)) + 'px', fontFamily: 'Inter', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: '1.1' }, 'k');
     S.blk = h('div', null, S.root, { position: 'absolute', inset: '0', background: '#000', opacity: '0' });
     S.update = (t, lt) => {
       drift(S.root, lt, 1, 1.03, 0, 0, 2);
@@ -95,7 +107,6 @@ export async function initScenes() {
     hit(B(20), 0.8); flash(B(20), 2, 0.7); ev(B(20), 'impact', 0.9); ev(B(20), 'outro', 1);
   }
 }
-function BEAT_(n) { return B(n) - B(0); }
 
 export function updateScenes(t) {
   runShots(t);

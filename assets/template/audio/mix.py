@@ -23,7 +23,11 @@ MUSIC = re.search(r"MUSIC:\s*'([^']+)'", LIB).group(1) if re.search(r"MUSIC:\s*'
 N = int(DUR * SR)
 rng = np.random.default_rng(2026)
 tt = np.arange(N) / SR
-EV = json.load(open(os.path.join(ROOT, "build", "events.json")))
+_evp = os.path.join(ROOT, "build", "events.json")
+if not os.path.exists(_evp):
+    raise SystemExit("mix.py: build/events.json is missing - dump the cue list first:\n"
+                     '  node tools/page.mjs "src/index.html?dump=1" build/events.json')
+EV = json.load(open(_evp))
 BEAT = 60.0 / BPM
 B = lambda k: OFFSET + BEAT * k
 

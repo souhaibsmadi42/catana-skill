@@ -5,6 +5,11 @@ import { initPost, drawPost, fxAt } from './post.js';
 import { initScenes, updateScenes, sceneEvents, gradeAt } from './scenes.js';
 
 window.FILM = FILM;
+// format comes from FILM (src/lib.js): size the stage, the SVG layers and the post canvas before any scene builds
+document.documentElement.style.setProperty('--W', FILM.W + 'px');
+document.documentElement.style.setProperty('--H', FILM.H + 'px');
+for (const id of ['dw', 'ov']) { const e = document.getElementById(id); e.setAttribute('width', FILM.W); e.setAttribute('height', FILM.H); e.setAttribute('viewBox', `0 0 ${FILM.W} ${FILM.H}`); }
+{ const c = document.getElementById('post'); c.width = FILM.W; c.height = FILM.H; }
 await initScenes();
 const WD = window.WORLD;   // set by world3d.js if a scene imported it
 const postCanvas = document.getElementById('post');

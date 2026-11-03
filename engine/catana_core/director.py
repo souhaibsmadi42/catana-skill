@@ -38,10 +38,40 @@ BEATS = {
                 ("attitude", "handheld", "the character of the wearer"), ("hero", "dolly_out", "the campaign frame"), ("end_card", "static", "brand / collection")],
     "character": [("intro", "push_in", "who they are"), ("action", "tracking", "what they do"), ("emotion", "push_in", "what they feel"), ("hero", "arc", "the defining image")],
     "concept_art": [("establish", "aerial_reveal", "the world"), ("explore", "parallax", "its layers"), ("wonder", "crane_up", "its scale")],
+    "automotive": [("hook", "fpv_drone", "the car bursting into frame"), ("reveal", "tracking", "the car in motion at speed"),
+                   ("design", "arc", "the silhouette and signature design lines"), ("detail", "push_in", "a wheel, light or badge detail"),
+                   ("interior", "steadicam", "the cockpit and the driver's hands"), ("hero", "aerial_reveal", "the car on the open road at scale"),
+                   ("end_card", "static", "model name, offer, call to action")],
+    "food": [("hook", "push_in", "the most appetizing moment"), ("ingredients", "top_down", "the fresh ingredients"),
+             ("craft", "tracking", "the cooking or pouring action"), ("detail", "rack_focus", "texture, steam, drip"),
+             ("hero", "arc", "the finished dish or drink"), ("end_card", "static", "brand, offer, where to get it")],
     "general": [("open", "dolly_in", "the opening image"), ("develop", "tracking", "development"), ("highlight", "arc", "the highlight"), ("close", "dolly_out", "the closing image")],
 }
 TRANSITIONS = {"hook": "hard cut on the beat", "end_card": "dip to brand colour", "cta": "hard cut", "reveal": "light flash / whip",
                "hero": "match cut", "establish": "fade in from black", "opening_image": "fade in from black"}
+
+
+def _skeleton_shots(base, domain, beats, n_shots, speed):
+    shots = []
+    for i in range(n_shots):
+        if n_shots >= len(beats):
+            bi = min(int(i * len(beats) / n_shots), len(beats) - 1)
+        else:                                       # fewer shots than beats: keep the first and last beat (hook / end card)
+            bi = round(i * (len(beats) - 1) / max(1, n_shots - 1))
+        beat, move, purpose = beats[bi]
+        first_of_beat = i == 0 or shots[-1]["beat"] != beat
+        if i > 0 and shots[-1]["beat"] == beat and domain != "ugc":  # vary the move within a beat (UGC stays handheld phone)
+            alt = [c for c in (cam.get(move)["combos"] or ["push_in"]) if c != "static"] or ["push_in"]
+            move = alt[(i - 1) % len(alt)]
+        shots.append({
+            "id": f"S{i + 1:02d}", "beat": beat, "purpose": purpose, "duration": 0.0,
+            "subject": f"{base.subject} — {purpose}" if beat not in ("end_card", "cta") else f"{purpose} for {base.subject}, clean negative space for text",
+            "action": "" if beat not in ("end_card", "cta") else "the frame settles and holds, only gentle ambient light movement",
+            "environment": "", "camera_moves": [{"id": move, "speed": speed}],
+            "characters": [], "vo": "", "sfx": "", "transition_out": TRANSITIONS.get(beat, "cut on action") if first_of_beat or beat in ("end_card", "cta") else "cut on action",
+            "references": [],
+        })
+    return shots
 
 
 def new_plan(idea, duration=None, platform=None, domain=None, aspect=None, title=None):
@@ -59,28 +89,20 @@ def new_plan(idea, duration=None, platform=None, domain=None, aspect=None, title
     lo, hi = presets()[domain].get("shot_seconds", [3, 5])
     beats = BEATS.get(domain, BEATS["general"])
     avg = (lo + hi) / 2
-    n_shots = max(len(beats) if duration >= len(beats) * lo else max(2, int(duration // lo)), min(24, round(duration / avg)))
-    n_shots = max(1, min(n_shots, 24))
-    per = duration / n_shots
-    shots = []
-    for i in range(n_shots):
-        bi = min(int(i * len(beats) / n_shots), len(beats) - 1)
-        beat, move, purpose = beats[bi]
-        if i > 0 and shots[-1]["beat"] == beat and domain != "ugc":  # vary the move within a beat (UGC stays handheld phone)
-            alt = cam.get(move)["combos"] or ["push_in"]
-            move = alt[(i - 1) % len(alt)]
-            if move == "static" and beat not in ("end_card", "cta"):
-                move = "push_in"
-        speed = "medium" if domain in ("social", "ugc") else "slow"
-        shots.append({
-            "id": f"S{i + 1:02d}", "beat": beat, "purpose": purpose,
-            "duration": round(per, 2),
-            "subject": f"{base.subject} — {purpose}" if beat not in ("end_card", "cta") else f"{purpose} for {base.subject}, clean negative space for text",
-            "action": "" if beat not in ("end_card", "cta") else "the frame settles and holds, only gentle ambient light movement",
-            "environment": "", "camera_moves": [{"id": move, "speed": speed}],
-            "characters": [], "vo": "", "sfx": "", "transition_out": TRANSITIONS.get(beat, "cut on action"),
-            "references": [],
-        })
+    n_shots = min(24, max(1, round(duration / avg)))
+    if n_shots < len(beats) and duration >= len(beats) * lo:
+        n_shots = len(beats)
+    speed = "medium" if domain in ("social", "ugc") else "slow"
+    while True:                                                        # fewest cuts lost: drop shots until every move fits
+        shots = _skeleton_shots(base, domain, beats, n_shots, speed)
+        needs = [max(lo, cam.get(s["camera_moves"][0]["id"])["min_seconds"]) for s in shots]
+        if sum(needs) <= duration + 1e-6 or n_shots == 1:
+            break
+        n_shots -= 1
+    spare = max(0.0, duration - sum(needs))
+    for s, need in zip(shots, needs):                                  # distribute spare time in proportion to need
+        s["duration"] = round(need + spare * need / sum(needs), 2)
+    shots[-1]["duration"] = round(duration - sum(x["duration"] for x in shots[:-1]), 2)
     return {
         "title": title or base.subject[:60], "idea": idea, "domain": domain, "platform": plat, "aspect_ratio": aspect,
         "duration": duration, "fps": (pspec or {}).get("fps", 24 if domain == "cinematic" else 30),

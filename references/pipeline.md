@@ -27,13 +27,15 @@ Each worker is a separate Chrome; segments are concatenated with stream copy (fr
 node tools/page.mjs "src/index.html?dump=1" build/events.json     # cue list from scenes.js
 python audio/mix.py                                               # out/soundtrack.wav, -14 LUFS, -1 dBFS
 ```
-Re-dump and re-mix whenever cue times change. The music is used unedited (cut the picture to the music, not the
+Re-dump and re-mix whenever cue times change. A voiceover is optional and free: put clips + `build/vo.json` (`{"cues": [{"t", "file", "gain"}]}`)
+in place — `python <skill>/scripts/catana.py voice plan …` writes both via the user's local VoiceStudio — and the mixer ducks
+music ~8 dB and SFX ~3 dB under the voice. The music is used unedited (cut the picture to the music, not the
 reverse). The SFX are procedural — say so on delivery; if the user has recorded SFX, load them in mix.py with
 `sf.read` and `add(sfx, t, x)`.
 
 ## Mux, web copy, QC
 ```bash
-FF=node_modules/ffmpeg-static/ffmpeg.exe     # (ffmpeg on mac/linux)
+FF=node_modules/ffmpeg-static/ffmpeg     # (ffmpeg.exe on Windows)
 $FF -y -v error -i out/master_noaudio.mp4 -i out/soundtrack.wav -c:v copy -c:a aac -b:a 320k -shortest -movflags +faststart ../Film_1080p60.mp4
 $FF -y -v error -i ../Film_1080p60.mp4 -c:v libx264 -preset slow -crf 25 -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart ../Film_1080p60_web.mp4
 python tools/qc.py ../Film_1080p60.mp4 qa/final      # per-frame pop/blip scan, near-black frames, 1 fps contact sheets

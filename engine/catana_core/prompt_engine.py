@@ -165,7 +165,8 @@ def enhance(text, domain=None, modality=None, overrides=None):
 
     technical = {}
     aspect = detect_aspect(text) or (p_spec["aspect_ratio"] if p_spec else None)
-    technical["aspect_ratio"] = aspect or ("16:9" if modality == "video" or domain in ("cinematic", "architecture") else "4:5" if domain == "fashion" else "1:1" if domain == "product" else "16:9")
+    technical["aspect_ratio"] = aspect or ("9:16" if domain in ("ugc", "social") else "16:9" if modality == "video" or domain in ("cinematic", "architecture", "automotive")
+                                           else "4:5" if domain in ("fashion", "food", "character") else "1:1" if domain == "product" else "16:9")
     if platform:
         technical["platform"] = platform
     if modality == "video":

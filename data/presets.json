@@ -73,7 +73,7 @@
         "color": "clean neutral grade, true-to-brand colors, deep but not crushed blacks",
         "environment": "seamless gradient studio sweep"
       },
-      "motion_default": "the product turns slowly on its axis while highlights glide across its surface",
+      "motion_default": "highlights glide slowly across the product surface while fine dust motes drift through the key light",
       "negative": [
         "warped or misspelled label text",
         "extra or missing product parts",
@@ -312,7 +312,7 @@
         "day in the life"
       ],
       "defaults": {
-        "composition": "vertical selfie framing, face in the upper third, product held toward camera in the lower third",
+        "composition": "selfie framing, face in the upper third, product held toward the camera in the lower third",
         "camera": "handheld smartphone camera at arm's length, slight natural shake",
         "lens": "smartphone front camera, 26mm-equivalent wide lens, deep focus",
         "lighting": "natural window daylight from the side, a little uneven, real-home ambience",
@@ -353,7 +353,7 @@
         "linkedin"
       ],
       "defaults": {
-        "composition": "vertical 9:16 framing, subject centered in the safe zone, nothing important in the top 14% or bottom 20%",
+        "composition": "subject centered inside the platform safe zone, key content and text clear of the caption and UI overlay areas",
         "camera": "dynamic camera with an energetic opening move",
         "lens": "24mm lens for punchy perspective",
         "lighting": "bright, high-key lighting with clear subject separation",
@@ -441,7 +441,7 @@
       ],
       "defaults": {
         "composition": "low three-quarter front view, car occupying the lower two thirds with the road leading into the frame",
-        "camera": "low camera at bumper height on a tracking vehicle",
+        "camera": "low camera at bumper height mounted on a camera car",
         "lens": "35mm lens, f/4, slight motion blur on wheels and background",
         "lighting": "low raking sun skimming the bodywork, long specular highlights tracing the body lines, deep reflections of the sky",
         "materials": "deep multi-layer paint with clear-coat reflections, machined alloy wheels, real tyre rubber, glass with accurate reflections",

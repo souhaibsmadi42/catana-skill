@@ -44,7 +44,7 @@ def find_in_text(text):
             if any(a < tb and b > ta for ta, tb in taken):
                 continue
             taken.append((a, b))
-            window = low[max(0, a - 30):a]
+            window = re.split(r"[,;.:]|\bthen\b|\band\b|\bwith\b", low[max(0, a - 30):a])[-1]   # speed words of this clause only
             speed = None
             for sp, words in SPEED_WORDS.items():
                 if any(re.search(r"\b" + w + r"\b", window) for w in words):

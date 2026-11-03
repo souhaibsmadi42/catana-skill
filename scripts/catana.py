@@ -126,8 +126,7 @@ def cmd_camera(a):
 
 def _available(a):
     av = set(x.strip() for x in (a.available or "").split(",") if x.strip())
-    if getattr(a, "detect", False) or not av:
-        av |= set(pv.local_available())
+    av |= set(pv.local_available())          # local providers (VoiceStudio, motion engine) are always detected
     return sorted(av)
 
 
@@ -300,7 +299,84 @@ def cmd_docs(a):
     with open(path, "w", encoding="utf8") as f:
         f.write("\n".join(L) + "\n")
     print("wrote", os.path.relpath(path, ROOT))
+    write_commands()
     return 0
+
+
+CLI_REFERENCE = [
+    ("enhance \"<request>\" [--domain] [--modality] [--aspect] [--duration] [--platform] [--provider] [--json]", "plain request → 13-field spec → prompt + negative + params + QC"),
+    ("lint <spec.json> [--provider] [--model] [--platform]", "QC checklist with fixes; exit 1 when not ready"),
+    ("camera list | show <move> | find \"<text>\" | check <moves…> [--duration] | phrase <move> [--speed]", "camera library"),
+    ("select --op <op> [--available a,b] [--duration] [--aspect] [--policy] [--approved-paid] [--prefer]", "rank providers for an operation"),
+    ("next --attempts <attempts.json> --op <op> [--available]", "after a failure: retry / fallback / ask / fix input / prompt pack"),
+    ("classify-error \"<message>\"", "map a provider error to a category"),
+    ("log --file runs.jsonl --provider --op --status [--asset] [--job-id] [--error]", "append to the run log (refuses success without an asset)"),
+    ("pack <spec.json|plan.json> --out <dir>", "write a prompt pack (nothing generated)"),
+    ("plan new \"<idea>\" [--duration] [--platform] [--domain] [--aspect] --out plan.json", "AI Director plan skeleton"),
+    ("plan compile <plan.json> [--out dir]", "keyframe + video prompts, VO plan, EDL, storyboard.md, QC"),
+    ("voice health | voices | archetypes | describe | fit | speak | plan", "VoiceStudio (free, local): voiceover and voice tools"),
+    ("providers [--detect] · platforms · presets", "manifests"),
+    ("docs", "regenerate docs/CAMERA_MOVEMENTS.md, docs/COMMANDS.md and commands/*.md from data/"),
+]
+
+
+def write_commands():
+    data = json.load(open(os.path.join(ROOT, "data", "commands.json"), encoding="utf8"))
+    cdir = os.path.join(ROOT, "commands")
+    os.makedirs(cdir, exist_ok=True)
+    known = set()
+    for c in data["commands"]:
+        known.add(c["name"] + ".md")
+        reads = ", ".join(f"`${{CLAUDE_PLUGIN_ROOT}}/{r}`" for r in c["reads"])
+        body = [
+            "---",
+            f"description: {c['purpose']}",
+            f"argument-hint: {c['argument_hint']}",
+            "disable-model-invocation: true",
+            "---",
+            "<!-- generated from data/commands.json by `python scripts/catana.py docs` — edit the JSON -->",
+            f"Use the **catana** skill in **{c['mode']}** mode ({c['title']}) for this request:",
+            "",
+            "$ARGUMENTS",
+            "",
+            f"1. Read `${{CLAUDE_PLUGIN_ROOT}}/SKILL.md` (rules and workflow), then {reads}.",
+            "2. Do this:",
+        ] + [f"   - {b}" for b in c["behavior"]] + [
+            "3. Engine CLI: `python ${CLAUDE_PLUGIN_ROOT}/scripts/catana.py <subcommand>` (standard library only).",
+            "4. Honesty: never report a generation without a returned asset; quote cost and get approval before any paid",
+            "   connector; sound stays free (VoiceStudio / CATANA mixer / user's music).",
+            f"5. If the request above is empty, ask only for: {c['parameters'][0].split(' (')[0]}.",
+            "",
+            "Limitations to state when relevant: " + "; ".join(c["limitations"]) + ".",
+        ]
+        with open(os.path.join(cdir, c["name"] + ".md"), "w", encoding="utf8") as f:
+            f.write("\n".join(body) + "\n")
+    for stale in os.listdir(cdir):
+        if stale.endswith(".md") and stale not in known:
+            os.remove(os.path.join(cdir, stale))
+    L = ["# Commands", "", "> Generated from `data/commands.json` by `python scripts/catana.py docs` — edit the JSON, not this file.", "",
+         "CATANA ships as a Claude Code plugin. Its slash commands are namespaced **`/catana:<command>`**; `/catana:catana`",
+         "is the skill itself (the intelligent router). Installed as a plain skill or uploaded to claude.ai, there are no",
+         "extra commands — say the mode in words (\"catana storyboard: …\") and the skill routes the same way.", "",
+         "| Command | Mode | Purpose |", "|---|---|---|", "| `/catana:catana` | router | Main assistant: understands the request and routes to the right workflow |"]
+    for c in data["commands"]:
+        L.append(f"| [`/catana:{c['name']}`](#{c['name']}) | {c['mode']} | {c['purpose']} |")
+    L += ["", "## /catana:catana", "", "**Purpose.** The main assistant and router (SKILL.md). Accepts any creative request, identifies the",
+          "output type, references and constraints, picks the workflow and provider, builds and lints the prompts, executes",
+          "through what is available and reports honestly.", "", "**Syntax.** `/catana:catana <anything>` — or just describe the job; the skill",
+          "triggers on creative production requests.", ""]
+    for c in data["commands"]:
+        L += [f"<a id=\"{c['name']}\"></a>", f"## /catana:{c['name']} — {c['title']}", "", f"**Purpose.** {c['purpose']}", "",
+              f"**Syntax.** `/catana:{c['name']} {c['argument_hint']}`", "", "**Parameters.**", ""] + [f"- {p}" for p in c["parameters"]] + [
+              "", "**Examples.**", ""] + [f"- `{e}`" for e in c["examples"]] + ["", "**Expected behaviour.**", ""] + [
+              f"{i + 1}. {b}" for i, b in enumerate(c["behavior"])] + ["", "**Limitations.**", ""] + [f"- {x}" for x in c["limitations"]] + [
+              "", f"**Reads.** {', '.join('`' + r + '`' for r in c['reads'])}", ""]
+    L += ["## Engine CLI (`python scripts/catana.py …`)", "", "| Subcommand | What it does |", "|---|---|"]
+    L += [f"| `{a}` | {b} |" for a, b in CLI_REFERENCE]
+    L += ["", "Exit codes: 0 ok · 1 QC errors / not ready · 2 usage or input error · 3 provider unavailable.", ""]
+    with open(os.path.join(ROOT, "docs", "COMMANDS.md"), "w", encoding="utf8") as f:
+        f.write("\n".join(L))
+    print(f"wrote commands/ ({len(data['commands'])} commands) and docs/COMMANDS.md")
 
 
 def main(argv=None):

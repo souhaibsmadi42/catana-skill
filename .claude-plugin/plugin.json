@@ -1,0 +1,28 @@
+{
+  "name": "catana",
+  "displayName": "CATANA \u2014 AI creative director",
+  "version": "2.0.0",
+  "description": "AI creative director and production engine: storyboards, structured image/video prompts with QC, camera movement library, AI Director, UGC/ads/cinematic/product/architecture/social studios, provider orchestration (Higgsfield, Runway, ElevenLabs, free local VoiceStudio) and a code-rendered Katana-style motion film engine.",
+  "author": {
+    "name": "souhaibsmadi42"
+  },
+  "homepage": "https://github.com/souhaibsmadi42/catana-skill",
+  "repository": "https://github.com/souhaibsmadi42/catana-skill",
+  "license": "MIT",
+  "keywords": [
+    "video",
+    "image",
+    "ai-video",
+    "storyboard",
+    "prompt-engineering",
+    "motion-graphics",
+    "camera-movement",
+    "ugc",
+    "advertising",
+    "architecture"
+  ],
+  "skills": [
+    "./"
+  ],
+  "icon": ".claude-plugin/icon.png"
+}

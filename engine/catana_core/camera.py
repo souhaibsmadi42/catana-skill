@@ -63,7 +63,7 @@ def phrase(move, speed="slow", **kw):
     if not m:
         raise KeyError(f"unknown camera movement: {move}")
     vals = {"speed": speed or "slow", "direction": kw.get("direction") or "up",
-            "from": kw.get("from") or "foreground subject", "to": kw.get("to") or "background subject"}
+            "from": kw.get("from") or "nearest element", "to": kw.get("to") or "main subject"}
     out = m["prompt_phrase"]
     for k, v in vals.items():
         out = out.replace("{" + k + "}", v)

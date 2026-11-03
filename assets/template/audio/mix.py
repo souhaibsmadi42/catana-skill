@@ -380,10 +380,31 @@ print("reverb...")
 IR = make_ir()
 wet = np.stack([signal.fftconvolve(rev_send[:, c], IR[:, c])[:N] for c in range(2)], 1)
 
+# =========================================================================== VOICEOVER (VoiceStudio or any recorded VO)
+# build/vo.json = {"cues": [{"t": seconds, "file": "build/vo/vo_S01.wav", "gain": 1.0}, ...]}
+#   written by:  python <skill>/scripts/catana.py voice plan compiled.json --out-dir build/vo   (free, local VoiceStudio)
+# Music is ducked ~8 dB and SFX ~3 dB under the voice so the words stay intelligible.
+vo = np.zeros((N, 2))
+VOP = os.path.join(ROOT, "build", "vo.json")
+if os.path.exists(VOP):
+    for c in json.load(open(VOP)).get("cues", []):
+        f = c["file"] if os.path.isabs(c["file"]) else os.path.join(ROOT, c["file"])
+        if not os.path.exists(f):
+            print("WARNING: missing VO clip", f); continue
+        x, sr = sf.read(f, dtype="float64")
+        if sr != SR: x = signal.resample_poly(x, SR, sr, axis=0)
+        if x.ndim == 1: x = np.stack([x, x], 1)
+        x = x / (np.max(np.abs(x)) + 1e-9) * 0.7
+        i0 = idx(c["t"]); i1 = min(N, i0 + len(x))
+        if i1 > i0: vo[i0:i1] += x[: i1 - i0] * float(c.get("gain", 1.0))
+    print(f"voiceover: {len(json.load(open(VOP)).get('cues', []))} cue(s)")
+_a = np.exp(-1 / (0.15 * SR))
+duck = np.clip(signal.lfilter([1 - _a], [1, -_a], np.abs(vo).max(1)) / 0.04, 0, 1)
+
 # =========================================================================== MIX + MASTER
 print("mix...")
 sfx_bus = sfx + wet * 0.6
-mix = music * 0.66 + sfx_bus * 0.9
+mix = music * 0.66 * (1 - 0.6 * duck)[:, None] + sfx_bus * 0.9 * (1 - 0.3 * duck)[:, None] + vo * 1.1
 fade_out = 1 - smoothstep((tt - (DUR - 1.6)) / 1.55)
 mix *= fade_out[:, None]
 env_ = np.sqrt(signal.lfilter([1 - np.exp(-1 / (0.3 * SR))], [1, -np.exp(-1 / (0.3 * SR))], (mix ** 2).mean(1)))

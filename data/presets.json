@@ -1,0 +1,523 @@
+{
+  "version": 1,
+  "note": "Domain presets for the prompt engine. 'defaults' fill only fields the user/Claude left empty; they are deliberately specific so no prompt goes out generic. 'keywords' drive domain detection. 'negative' is merged into negative constraints. 'shot_seconds' guides the AI Director's pacing.",
+  "domains": {
+    "general": {
+      "label": "General image / video",
+      "keywords": [],
+      "defaults": {
+        "composition": "rule-of-thirds composition with a clear focal point and clean negative space",
+        "camera": "eye-level camera",
+        "lens": "35mm lens, f/4, natural perspective",
+        "lighting": "soft directional key light from camera left with gentle fill and a subtle rim",
+        "materials": "true-to-life textures with fine surface detail",
+        "style": "photorealistic, natural and believable",
+        "color": "balanced natural color grade with soft contrast"
+      },
+      "motion_default": "subtle natural motion in the scene",
+      "negative": [
+        "blurry",
+        "low resolution",
+        "distorted anatomy",
+        "extra limbs or fingers",
+        "warped text",
+        "watermark",
+        "logo artifacts",
+        "oversaturated colors"
+      ],
+      "shot_seconds": [
+        3,
+        5
+      ]
+    },
+    "product": {
+      "label": "Product photography / commercial",
+      "keywords": [
+        "product",
+        "packshot",
+        "bottle",
+        "perfume",
+        "watch",
+        "sneaker",
+        "shoe",
+        "headphones",
+        "phone",
+        "skincare",
+        "cosmetic",
+        "can",
+        "packaging",
+        "jewelry",
+        "jewellery",
+        "bag",
+        "handbag",
+        "gadget",
+        "e-commerce",
+        "ecommerce",
+        "amazon listing",
+        "earbuds",
+        "earphones",
+        "speaker",
+        "laptop",
+        "serum",
+        "lipstick",
+        "candle",
+        "sunglasses"
+      ],
+      "defaults": {
+        "composition": "centered hero composition, product filling about 60% of the frame, generous clean negative space for copy",
+        "camera": "slightly low three-quarter angle that gives the product presence",
+        "lens": "100mm macro lens, f/8 for edge-to-edge sharpness",
+        "lighting": "large softbox key at 45 degrees, strip-light rim tracing the silhouette, white bounce fill, controlled specular highlights",
+        "materials": "accurate materials: crisp label print, true metal and glass reflections, micro surface texture",
+        "style": "premium commercial studio photography",
+        "color": "clean neutral grade, true-to-brand colors, deep but not crushed blacks",
+        "environment": "seamless gradient studio sweep"
+      },
+      "motion_default": "the product turns slowly on its axis while highlights glide across its surface",
+      "negative": [
+        "warped or misspelled label text",
+        "extra or missing product parts",
+        "deformed packaging",
+        "fingerprints and dust",
+        "cluttered background",
+        "plastic-looking materials",
+        "floating shadows"
+      ],
+      "shot_seconds": [
+        2,
+        4
+      ],
+      "preserve_on_reference": [
+        "exact product shape and proportions",
+        "logo and label artwork",
+        "brand colors",
+        "material finish"
+      ]
+    },
+    "architecture": {
+      "label": "Architectural visualization",
+      "keywords": [
+        "villa",
+        "house",
+        "building",
+        "architecture",
+        "architectural",
+        "interior",
+        "exterior",
+        "facade",
+        "façade",
+        "real estate",
+        "property",
+        "apartment",
+        "penthouse",
+        "tower",
+        "resort",
+        "hotel",
+        "lobby",
+        "residence",
+        "mansion",
+        "office building",
+        "construction"
+      ],
+      "defaults": {
+        "composition": "two-point perspective, horizon at one third, building occupying the golden section with landscape leading lines",
+        "camera": "eye-level camera at 1.6 m, verticals perfectly corrected",
+        "lens": "24mm tilt-shift lens, f/8, straight converging-free verticals",
+        "lighting": "golden hour sun low from the west raking across the façade, warm interior lights glowing, soft sky fill",
+        "materials": "physically accurate materials: honed travertine, board-formed concrete, bronze-tinted glazing with real reflections, natural timber",
+        "style": "photorealistic high-end architectural photography",
+        "color": "warm golden highlights, clean neutral midtones, cool sky gradient, gentle contrast",
+        "environment": "landscaped site with native planting, a still reflecting pool and open sky"
+      },
+      "motion_default": "subtle environmental motion: palm fronds swaying, water rippling in the pool, clouds drifting slowly",
+      "negative": [
+        "warped or bent verticals",
+        "impossible geometry",
+        "melting or merging structures",
+        "floating buildings",
+        "distorted windows",
+        "extra floors",
+        "people with distorted faces",
+        "fisheye distortion"
+      ],
+      "shot_seconds": [
+        4,
+        6
+      ],
+      "preserve_on_reference": [
+        "building massing and footprint",
+        "number of floors",
+        "window and opening layout",
+        "roof form",
+        "materials",
+        "camera position and composition of the reference"
+      ]
+    },
+    "fashion": {
+      "label": "Fashion / editorial",
+      "keywords": [
+        "fashion",
+        "editorial",
+        "model wearing",
+        "runway",
+        "lookbook",
+        "outfit",
+        "couture",
+        "streetwear",
+        "collection",
+        "garment",
+        "dress",
+        "vogue"
+      ],
+      "defaults": {
+        "composition": "full-length or three-quarter figure, strong graphic negative space, model off-center",
+        "camera": "slightly low eye-level camera that elongates the figure",
+        "lens": "85mm lens, f/2.8, flattering compression",
+        "lighting": "hard sunlight key with crisp shadows and a white bounce fill, or large beauty dish for studio",
+        "materials": "visible fabric weave, drape and sheen, realistic stitching",
+        "style": "high-fashion editorial photography",
+        "color": "rich editorial grade with controlled skin tones and a confident accent color",
+        "environment": "minimal location with strong architectural lines and clean negative space"
+      },
+      "motion_default": "confident walk or slow pose transition, fabric moving naturally",
+      "negative": [
+        "distorted hands",
+        "extra fingers",
+        "malformed garments",
+        "fabric clipping through the body",
+        "plastic skin",
+        "uncanny face",
+        "warped logos"
+      ],
+      "shot_seconds": [
+        2,
+        4
+      ],
+      "preserve_on_reference": [
+        "garment cut and silhouette",
+        "fabric pattern and color",
+        "logos and trims",
+        "model identity"
+      ]
+    },
+    "character": {
+      "label": "Character / portrait",
+      "keywords": [
+        "character",
+        "portrait",
+        "person",
+        "man",
+        "woman",
+        "girl",
+        "boy",
+        "actor",
+        "influencer",
+        "avatar",
+        "spokesperson",
+        "face",
+        "headshot",
+        "hero character"
+      ],
+      "defaults": {
+        "composition": "medium close-up, eyes on the upper third line, looking slightly off-camera",
+        "camera": "eye-level camera",
+        "lens": "85mm lens, f/1.8, shallow depth of field",
+        "lighting": "soft key light at 45 degrees with Rembrandt shading, subtle hair light, negative fill on the shadow side",
+        "materials": "natural skin texture with visible pores, realistic hair strands, detailed fabric",
+        "style": "cinematic portrait photography",
+        "color": "natural skin tones, soft filmic contrast",
+        "environment": "softly defocused environment that reflects the character's world"
+      },
+      "motion_default": "subtle natural micro-expressions, blinking and breathing",
+      "negative": [
+        "plastic or waxy skin",
+        "asymmetric eyes",
+        "distorted hands",
+        "extra fingers",
+        "identity drift",
+        "changing hairstyle",
+        "changing wardrobe",
+        "uncanny smile"
+      ],
+      "shot_seconds": [
+        3,
+        5
+      ],
+      "preserve_on_reference": [
+        "face identity and proportions",
+        "hairstyle and hair color",
+        "skin tone",
+        "wardrobe",
+        "distinguishing marks"
+      ]
+    },
+    "cinematic": {
+      "label": "Cinematic / film",
+      "keywords": [
+        "cinematic",
+        "film",
+        "movie",
+        "short film",
+        "scene",
+        "trailer",
+        "noir",
+        "sci-fi",
+        "thriller",
+        "drama",
+        "epic",
+        "storyboard",
+        "sequence"
+      ],
+      "defaults": {
+        "composition": "widescreen composition with deliberate depth: foreground element, subject in the midground, background detail",
+        "camera": "motivated camera at eye level",
+        "lens": "anamorphic 40mm lens, f/2.8, gentle oval bokeh and subtle horizontal flares",
+        "lighting": "motivated practical lighting with strong contrast, atmospheric haze catching the light",
+        "materials": "tactile, lived-in textures and set dressing",
+        "style": "cinematic film still, shot on 35mm film",
+        "color": "filmic teal-and-amber grade with rich shadows and soft highlight roll-off, fine film grain",
+        "environment": "a lived-in location with layered depth and atmospheric haze"
+      },
+      "motion_default": "deliberate motivated camera move with natural character action",
+      "negative": [
+        "video game look",
+        "flat lighting",
+        "oversharpened",
+        "plastic skin",
+        "inconsistent characters",
+        "warped faces",
+        "text overlays"
+      ],
+      "shot_seconds": [
+        3,
+        6
+      ]
+    },
+    "ugc": {
+      "label": "UGC / creator-style",
+      "keywords": [
+        "ugc",
+        "user generated",
+        "user-generated",
+        "creator",
+        "influencer style",
+        "testimonial",
+        "talking head",
+        "selfie",
+        "unboxing",
+        "review video",
+        "tiktok style",
+        "get ready with me",
+        "grwm",
+        "day in the life"
+      ],
+      "defaults": {
+        "composition": "vertical selfie framing, face in the upper third, product held toward camera in the lower third",
+        "camera": "handheld smartphone camera at arm's length, slight natural shake",
+        "lens": "smartphone front camera, 26mm-equivalent wide lens, deep focus",
+        "lighting": "natural window daylight from the side, a little uneven, real-home ambience",
+        "materials": "real home textures: rumpled bedding, kitchen counter clutter kept tidy, real skin texture",
+        "style": "authentic user-generated smartphone video, unpolished and believable",
+        "color": "natural smartphone color, slightly warm, no cinematic grade",
+        "environment": "lived-in bedroom or kitchen at home"
+      },
+      "motion_default": "talking to camera with natural hand gestures, showing the product to the lens",
+      "negative": [
+        "studio lighting",
+        "cinematic color grade",
+        "perfect skin retouching",
+        "stock-photo look",
+        "lip-sync mismatch",
+        "distorted hands",
+        "warped product label"
+      ],
+      "shot_seconds": [
+        2,
+        4
+      ]
+    },
+    "social": {
+      "label": "Social media short-form",
+      "keywords": [
+        "reel",
+        "reels",
+        "tiktok",
+        "shorts",
+        "youtube shorts",
+        "instagram",
+        "story",
+        "stories",
+        "social",
+        "viral",
+        "hook",
+        "linkedin"
+      ],
+      "defaults": {
+        "composition": "vertical 9:16 framing, subject centered in the safe zone, nothing important in the top 14% or bottom 20%",
+        "camera": "dynamic camera with an energetic opening move",
+        "lens": "24mm lens for punchy perspective",
+        "lighting": "bright, high-key lighting with clear subject separation",
+        "materials": "crisp, high-detail textures that read on a phone screen",
+        "style": "scroll-stopping short-form social video",
+        "color": "vibrant, high-contrast grade that pops on mobile",
+        "environment": "bright, uncluttered real-world setting"
+      },
+      "motion_default": "immediate motion in the first second to stop the scroll",
+      "negative": [
+        "slow start",
+        "important content in caption safe zones",
+        "tiny unreadable details",
+        "letterboxing",
+        "watermark"
+      ],
+      "shot_seconds": [
+        1,
+        3
+      ]
+    },
+    "concept_art": {
+      "label": "Concept art / environment",
+      "keywords": [
+        "concept art",
+        "environment",
+        "world",
+        "landscape",
+        "fantasy",
+        "alien",
+        "matte painting",
+        "keyframe art",
+        "worldbuilding"
+      ],
+      "defaults": {
+        "composition": "epic wide composition with strong silhouette readability and atmospheric depth layers",
+        "camera": "low wide establishing angle",
+        "lens": "18mm wide lens, deep focus",
+        "lighting": "dramatic volumetric light shafts through atmosphere, strong value grouping",
+        "materials": "painterly but believable surfaces with clear material read",
+        "style": "high-end cinematic concept art, digital painting",
+        "color": "limited cohesive palette with one accent hue guiding the eye",
+        "environment": "vast landscape with layered atmospheric depth"
+      },
+      "motion_default": "slow atmospheric drift of clouds, fog and particles",
+      "negative": [
+        "muddy values",
+        "cluttered silhouettes",
+        "random detail noise",
+        "text",
+        "watermark"
+      ],
+      "shot_seconds": [
+        4,
+        6
+      ]
+    },
+    "automotive": {
+      "label": "Automotive commercial",
+      "keywords": [
+        "car",
+        "cars",
+        "porsche",
+        "ferrari",
+        "lamborghini",
+        "bmw",
+        "mercedes",
+        "audi",
+        "tesla",
+        "range rover",
+        "suv",
+        "sedan",
+        "coupe",
+        "supercar",
+        "sports car",
+        "vehicle",
+        "automotive",
+        "truck",
+        "pickup",
+        "motorcycle",
+        "motorbike",
+        "ev",
+        "electric car",
+        "convertible"
+      ],
+      "defaults": {
+        "composition": "low three-quarter front view, car occupying the lower two thirds with the road leading into the frame",
+        "camera": "low camera at bumper height on a tracking vehicle",
+        "lens": "35mm lens, f/4, slight motion blur on wheels and background",
+        "lighting": "low raking sun skimming the bodywork, long specular highlights tracing the body lines, deep reflections of the sky",
+        "materials": "deep multi-layer paint with clear-coat reflections, machined alloy wheels, real tyre rubber, glass with accurate reflections",
+        "style": "premium automotive commercial cinematography",
+        "color": "rich contrast, deep blacks, glossy highlights, cool shadows against warm sunlight",
+        "environment": "sweeping open road through dramatic landscape"
+      },
+      "motion_default": "the car glides forward with wheels turning, reflections sliding across the bodywork",
+      "negative": [
+        "warped body panels",
+        "mismatched or melting wheels",
+        "wrong badge or logo",
+        "extra doors or mirrors",
+        "wheels not touching the road",
+        "distorted reflections",
+        "floating car"
+      ],
+      "shot_seconds": [
+        2,
+        4
+      ],
+      "preserve_on_reference": [
+        "exact body shape and proportions",
+        "badge and grille design",
+        "wheel design",
+        "paint colour"
+      ]
+    },
+    "food": {
+      "label": "Food & beverage",
+      "keywords": [
+        "food",
+        "dish",
+        "burger",
+        "pizza",
+        "coffee",
+        "latte",
+        "cocktail",
+        "drink",
+        "beverage",
+        "dessert",
+        "cake",
+        "chocolate",
+        "restaurant",
+        "chef",
+        "plating",
+        "sushi",
+        "pasta",
+        "ice cream",
+        "juice",
+        "beer",
+        "wine"
+      ],
+      "defaults": {
+        "composition": "tight 45-degree hero angle, dish filling the frame with a shallow foreground prop",
+        "camera": "45-degree high angle, or flat lay for spreads",
+        "lens": "100mm macro lens, f/4, creamy background falloff",
+        "lighting": "soft backlight from a window behind the food for glow and translucency, white bounce fill in front, small specular kick on moist surfaces",
+        "materials": "glistening sauces, crisp textures, visible steam, condensation droplets on cold glass, fresh herbs",
+        "style": "high-end food commercial photography",
+        "color": "warm appetizing grade, saturated but natural food colours",
+        "environment": "rustic tabletop with linen and ceramic props"
+      },
+      "motion_default": "steam rises slowly, a sauce drizzles in a thin ribbon, garnish falls in slow motion",
+      "negative": [
+        "unappetizing grey tones",
+        "plastic-looking food",
+        "melted mess",
+        "dirty plates",
+        "floating food",
+        "extra utensils"
+      ],
+      "shot_seconds": [
+        2,
+        4
+      ]
+    }
+  }
+}

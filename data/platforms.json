@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "note": "Delivery specs per platform. Platforms change limits often: these are planning defaults, not guarantees — tell the user to confirm length limits for paid placements. safe_zone = fraction of frame height/width to keep free of key content and text (UI overlays).",
+  "platforms": {
+    "instagram_reels": { "label": "Instagram Reels", "aspect_ratio": "9:16", "size": [1080, 1920], "fps": 30, "ideal_seconds": [7, 30], "hook_seconds": 1.5, "safe_zone": { "top": 0.14, "bottom": 0.2, "left": 0.06, "right": 0.12 }, "captions": "burned-in captions recommended (many watch muted)" },
+    "instagram_feed": { "label": "Instagram feed", "aspect_ratio": "4:5", "size": [1080, 1350], "fps": 30, "ideal_seconds": [6, 30], "hook_seconds": 2, "safe_zone": { "top": 0.05, "bottom": 0.05, "left": 0.05, "right": 0.05 }, "captions": "recommended" },
+    "instagram_story": { "label": "Instagram Stories", "aspect_ratio": "9:16", "size": [1080, 1920], "fps": 30, "ideal_seconds": [5, 15], "hook_seconds": 1, "safe_zone": { "top": 0.14, "bottom": 0.2, "left": 0.06, "right": 0.06 }, "captions": "recommended" },
+    "tiktok": { "label": "TikTok", "aspect_ratio": "9:16", "size": [1080, 1920], "fps": 30, "ideal_seconds": [9, 34], "hook_seconds": 1.5, "safe_zone": { "top": 0.12, "bottom": 0.22, "left": 0.06, "right": 0.15 }, "captions": "burned-in captions recommended; native-feeling, creator-style edits perform best" },
+    "youtube_shorts": { "label": "YouTube Shorts", "aspect_ratio": "9:16", "size": [1080, 1920], "fps": 30, "ideal_seconds": [15, 50], "hook_seconds": 2, "safe_zone": { "top": 0.12, "bottom": 0.2, "left": 0.06, "right": 0.12 }, "captions": "recommended" },
+    "youtube": { "label": "YouTube (landscape)", "aspect_ratio": "16:9", "size": [1920, 1080], "fps": 30, "ideal_seconds": [30, 600], "hook_seconds": 5, "safe_zone": { "top": 0.05, "bottom": 0.1, "left": 0.05, "right": 0.05 }, "captions": "upload SRT; burn-in optional" },
+    "linkedin": { "label": "LinkedIn feed", "aspect_ratio": "1:1", "size": [1080, 1080], "fps": 30, "ideal_seconds": [15, 90], "hook_seconds": 3, "safe_zone": { "top": 0.05, "bottom": 0.1, "left": 0.05, "right": 0.05 }, "captions": "burned-in captions strongly recommended (mostly muted autoplay); 4:5 and 16:9 also accepted" },
+    "facebook_feed": { "label": "Facebook feed", "aspect_ratio": "4:5", "size": [1080, 1350], "fps": 30, "ideal_seconds": [6, 30], "hook_seconds": 2, "safe_zone": { "top": 0.05, "bottom": 0.12, "left": 0.05, "right": 0.05 }, "captions": "recommended" },
+    "ads_vertical": { "label": "Paid social ads (vertical)", "aspect_ratio": "9:16", "size": [1080, 1920], "fps": 30, "ideal_seconds": [6, 20], "hook_seconds": 1, "safe_zone": { "top": 0.14, "bottom": 0.25, "left": 0.06, "right": 0.12 }, "captions": "required; brand and offer visible by second 3" },
+    "web_hero": { "label": "Website hero / landing page", "aspect_ratio": "16:9", "size": [1920, 1080], "fps": 30, "ideal_seconds": [8, 20], "hook_seconds": 3, "safe_zone": { "top": 0.08, "bottom": 0.08, "left": 0.08, "right": 0.08 }, "captions": "none (silent loop); seamless loop recommended" },
+    "tv_cinema": { "label": "TV / cinema / presentation", "aspect_ratio": "16:9", "size": [1920, 1080], "fps": 24, "ideal_seconds": [15, 120], "hook_seconds": 5, "safe_zone": { "top": 0.05, "bottom": 0.05, "left": 0.05, "right": 0.05 }, "captions": "optional" }
+  },
+  "aliases": {
+    "reel": "instagram_reels", "reels": "instagram_reels", "instagram reel": "instagram_reels", "ig reel": "instagram_reels",
+    "instagram post": "instagram_feed", "instagram": "instagram_feed", "ig post": "instagram_feed",
+    "story": "instagram_story", "stories": "instagram_story",
+    "tiktok": "tiktok", "tik tok": "tiktok",
+    "shorts": "youtube_shorts", "youtube shorts": "youtube_shorts", "yt shorts": "youtube_shorts",
+    "youtube": "youtube", "yt": "youtube",
+    "linkedin": "linkedin",
+    "facebook": "facebook_feed",
+    "ad": "ads_vertical", "ads": "ads_vertical", "paid social": "ads_vertical",
+    "website": "web_hero", "landing page": "web_hero", "hero video": "web_hero",
+    "tv": "tv_cinema", "cinema": "tv_cinema", "presentation": "tv_cinema"
+  }
+}

@@ -10,3 +10,5 @@ __pycache__/
 .DS_Store
 Thumbs.db
 !media/*.mp4
+catana_runs.jsonl
+build/

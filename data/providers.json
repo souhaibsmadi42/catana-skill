@@ -1,0 +1,429 @@
+{
+  "version": 1,
+  "note": "Provider capability manifest. CATANA separates creative direction (spec + prompts) from execution (a provider). 'kind': connector = an MCP connector Claude calls; local = runs on this machine; export = writes files only. 'available_when' tells Claude how to detect it. Capabilities of connectors are a SNAPSHOT (date in 'snapshot'): always re-verify at run time with the provider's discovery tool before executing. 'cost': free | credits | user_reports_free. Paid providers never run without the user's explicit approval of the quoted cost.",
+  "operations": {
+    "t2i": "text to image",
+    "i2i": "image to image / edit",
+    "multi_ref_image": "image from several reference images",
+    "style_transfer": "restyle an image keeping its subject",
+    "upscale_image": "image upscale / enhance",
+    "outpaint": "extend an image beyond its borders",
+    "t2v": "text to video",
+    "i2v": "image to video (start frame)",
+    "first_last": "video between a first and a last frame",
+    "multi_ref_video": "video from several reference images (identity/product consistency)",
+    "v2v": "video to video / edit",
+    "extend_video": "extend or continue a video",
+    "multi_shot": "several shots in one generation",
+    "motion_transfer": "transfer motion from a reference video",
+    "lipsync": "lip-sync a face video to audio",
+    "upscale_video": "video upscale",
+    "reframe": "change a video's aspect ratio",
+    "tts": "text to speech / voiceover",
+    "voice_design": "design a new voice",
+    "sfx": "sound effects",
+    "music": "music generation",
+    "motion_graphics": "code-rendered motion graphics film (kinetic type, UI, data)",
+    "prompt_pack": "export production-ready prompts",
+    "voice_convert": "re-voice a recording into another voice",
+    "transcribe": "speech to text with timestamps",
+    "dub": "translate and re-voice a video"
+  },
+  "policy": {
+    "cost_policy_default": "free_first",
+    "cost_policies": {
+      "free_first": "Rank free providers first. A paid provider is only offered as an option; it runs only after the user approves the quoted cost.",
+      "free_only": "Never select a paid provider. If no free provider supports the operation, fall back to prompt_only.",
+      "best_quality": "Rank by capability fit regardless of cost (still needs quote + approval before any spend)."
+    },
+    "audio_preference": [
+      "voice_studio",
+      "catana_motion",
+      "prompt_only",
+      "elevenlabs",
+      "runway",
+      "higgsfield"
+    ],
+    "retry": {
+      "max_retries": 2,
+      "backoff_seconds": [
+        4,
+        15
+      ],
+      "retryable": [
+        "timeout",
+        "rate_limited",
+        "server_error",
+        "network"
+      ]
+    },
+    "never_auto_fallback_on": [
+      "insufficient_credits",
+      "paid_plan_required",
+      "content_policy",
+      "invalid_input"
+    ],
+    "success_requires": "an asset URL, asset id or job id returned by the provider; a call that returned none is not a success",
+    "audio_cost_policy": "free_only",
+    "audio_cost_policy_note": "User requirement: sound and voice must be free. Audio operations default to free_only (VoiceStudio, the CATANA SFX mixer, or a prompt/script pack); paid audio runs only if the user explicitly asks for that provider."
+  },
+  "providers": {
+    "voice_studio": {
+      "label": "VoiceStudio (local, free)",
+      "kind": "http_local",
+      "available_when": "the VoiceStudio app is running on the user's machine: GET {base_url}/health answers. base_url = $CATANA_VOICE_STUDIO_URL or http://127.0.0.1:3900. Must run where that address is reachable (Claude Code on the same computer) — a cloud session cannot reach the user's localhost.",
+      "cost": "free",
+      "operations": [
+        "tts",
+        "voice_design",
+        "voice_convert",
+        "transcribe",
+        "dub"
+      ],
+      "verified": true,
+      "snapshot": "2026-11-03 from the user's VoiceStudio OpenAPI (v0.5.7)",
+      "auth": "none on loopback; remote access needs 'Authorization: Bearer $OMNIVOICE_API_KEY'",
+      "endpoints": {
+        "health": "GET /health",
+        "capabilities": "GET /v1/audio/capabilities",
+        "voices": "GET /v1/audio/voices",
+        "models": "GET /v1/models",
+        "archetypes": "GET /archetypes?q=&use_case=&gender=&age=&accent=&lang=",
+        "profiles": "GET /profiles",
+        "describe_voice": "POST /design/describe {description}",
+        "speech": "POST /v1/audio/speech {model, input<=4096, voice, instructions, instruct, response_format, speed 0.25-4, language, duration, seed}",
+        "rate_fit": "POST /tools/rate-fit {text, slot_seconds, target_lang}",
+        "direction": "POST /tools/direction {text}",
+        "convert": "POST /convert (multipart audio + profile_id)",
+        "transcribe": "POST /v1/audio/transcriptions (multipart file)"
+      },
+      "limits": {
+        "tts_chars_per_request": 4096,
+        "speed": [
+          0.25,
+          4.0
+        ],
+        "formats": [
+          "mp3",
+          "opus",
+          "aac",
+          "flac",
+          "wav",
+          "pcm"
+        ]
+      },
+      "notes": "User's preferred and free provider for everything voice. No sound-effect or music generation: SFX come from catana_motion (procedural, free) and music from the user's own track. Client: engine/catana_core/voice_studio.py; CLI: scripts/catana.py voice ..."
+    },
+    "catana_motion": {
+      "label": "CATANA motion engine (local)",
+      "kind": "local",
+      "available_when": "Node 18+, Python 3 (numpy scipy soundfile pyloudnorm pillow) and Chrome/Chromium on the machine",
+      "cost": "free",
+      "operations": [
+        "motion_graphics",
+        "sfx",
+        "reframe"
+      ],
+      "verified": true,
+      "limits": {
+        "duration_seconds": [
+          1,
+          600
+        ],
+        "aspect_ratios": [
+          "16:9",
+          "9:16",
+          "1:1",
+          "4:5"
+        ],
+        "fps": [
+          24,
+          25,
+          30,
+          50,
+          60
+        ]
+      },
+      "notes": "Deterministic code-rendered films (kinetic type, rebuilt UI, data, 3D models) with procedural SFX on the user's own music track. 'sfx' here = procedural sound effects mixed to picture cues, not generative audio. No voice synthesis, no AI footage."
+    },
+    "prompt_only": {
+      "label": "Prompt pack export",
+      "kind": "export",
+      "available_when": "always",
+      "cost": "free",
+      "operations": [
+        "t2i",
+        "i2i",
+        "multi_ref_image",
+        "style_transfer",
+        "t2v",
+        "i2v",
+        "first_last",
+        "multi_ref_video",
+        "v2v",
+        "extend_video",
+        "multi_shot",
+        "tts",
+        "sfx",
+        "music",
+        "prompt_pack"
+      ],
+      "verified": true,
+      "notes": "Writes production-ready prompts, settings and a voiceover script to disk. Nothing is generated; the result status is 'prompt_only', never 'succeeded'."
+    },
+    "higgsfield": {
+      "label": "Higgsfield",
+      "kind": "connector",
+      "available_when": "tools named mcp__Higgsfield__* are present",
+      "cost": "credits",
+      "operations": [
+        "t2i",
+        "i2i",
+        "multi_ref_image",
+        "style_transfer",
+        "upscale_image",
+        "outpaint",
+        "t2v",
+        "i2v",
+        "first_last",
+        "multi_ref_video",
+        "v2v",
+        "extend_video",
+        "multi_shot",
+        "motion_transfer",
+        "lipsync",
+        "upscale_video",
+        "reframe",
+        "tts",
+        "music"
+      ],
+      "verified": true,
+      "snapshot": "2026-11-03 via models_explore(list)",
+      "discovery": "models_explore(action:'recommend' | 'get'); balance() for credits; generate_*(get_cost:true) preflights cost without submitting",
+      "tools": {
+        "image": "generate_image",
+        "video": "generate_video",
+        "audio": "generate_audio",
+        "batch": "generate_*_batch",
+        "wait": "jobs_wait",
+        "show": "show_generation_by_ids",
+        "upscale": "upscale_image / upscale_video",
+        "reframe": "reframe",
+        "ugc_ads": "show_marketing_studio_v2 / ads_studio_*",
+        "influencer": "ai_influencer_prepare -> ai_influencer_generate"
+      },
+      "limits": {
+        "video_seconds_max": 30,
+        "aspect_ratios": [
+          "21:9",
+          "16:9",
+          "4:3",
+          "1:1",
+          "3:4",
+          "9:16"
+        ]
+      },
+      "known_models": {
+        "seedance_2_5": {
+          "ops": [
+            "t2v",
+            "multi_ref_video",
+            "v2v",
+            "extend_video"
+          ],
+          "seconds": [
+            4,
+            30
+          ],
+          "refs": "start/end image, image, video, audio references"
+        },
+        "seedance_2_0": {
+          "ops": [
+            "t2v",
+            "i2v",
+            "first_last",
+            "multi_ref_video"
+          ],
+          "seconds": [
+            4,
+            15
+          ],
+          "refs": "identity/product consistency"
+        },
+        "kling4_0": {
+          "ops": [
+            "t2v",
+            "i2v",
+            "first_last",
+            "multi_ref_video",
+            "v2v"
+          ],
+          "seconds": [
+            3,
+            30
+          ]
+        },
+        "kling_o3_image_reference": {
+          "ops": [
+            "t2v",
+            "multi_ref_video",
+            "multi_shot"
+          ],
+          "seconds": [
+            3,
+            15
+          ],
+          "refs": "up to 7 images"
+        },
+        "cinematic_studio_video_4_0": {
+          "ops": [
+            "t2v",
+            "multi_ref_video",
+            "v2v",
+            "extend_video"
+          ],
+          "seconds": [
+            4,
+            30
+          ],
+          "notes": "camera body, lens, aperture, lighting rig, palette controls"
+        },
+        "minimax_h3": {
+          "ops": [
+            "t2v",
+            "i2v",
+            "first_last",
+            "multi_ref_video"
+          ],
+          "seconds": [
+            4,
+            15
+          ]
+        },
+        "marketing_studio_video": {
+          "ops": [
+            "t2v",
+            "i2v"
+          ],
+          "seconds": [
+            12,
+            15
+          ],
+          "notes": "UGC / product ad formats with avatars and products"
+        },
+        "hf_mult_motion_control": {
+          "ops": [
+            "motion_transfer"
+          ]
+        },
+        "sync_so": {
+          "ops": [
+            "lipsync"
+          ]
+        },
+        "flux_3_image": {
+          "ops": [
+            "t2i",
+            "i2i",
+            "multi_ref_image"
+          ],
+          "refs": "up to 10 images"
+        },
+        "nano_banana_pro": {
+          "ops": [
+            "t2i",
+            "i2i",
+            "multi_ref_image"
+          ],
+          "notes": "strong text rendering"
+        },
+        "soul_2": {
+          "ops": [
+            "t2i",
+            "i2i"
+          ],
+          "notes": "realistic UGC, fashion, character"
+        },
+        "cinematic_studio_2_5": {
+          "ops": [
+            "t2i",
+            "i2i"
+          ],
+          "notes": "cinematic stills up to 4K"
+        },
+        "flux_kontext": {
+          "ops": [
+            "style_transfer",
+            "i2i"
+          ]
+        }
+      },
+      "notes": "In the reference session the account was on the free plan with 0 credits: generation needs credits or the user's explicit free-generation request."
+    },
+    "runway": {
+      "label": "Runway",
+      "kind": "connector",
+      "available_when": "tools named mcp__Runway__* are present",
+      "cost": "credits",
+      "operations": [
+        "t2i",
+        "i2i",
+        "t2v",
+        "i2v",
+        "v2v",
+        "extend_video",
+        "multi_shot",
+        "upscale_image",
+        "upscale_video",
+        "tts",
+        "sfx",
+        "music"
+      ],
+      "verified": false,
+      "snapshot": "2026-11-03 from tool schemas (whoami not yet run)",
+      "discovery": "whoami() lists the models the connected workspace can run; video, speech and sound effects need a paid workspace",
+      "tools": {
+        "image": "generate_image",
+        "video": "generate_video",
+        "multishot": "generate_multishot_video",
+        "product": "generate_product_marketing_video",
+        "speech": "generate_speech",
+        "sfx": "generate_sound_effect",
+        "music": "generate_music",
+        "edit": "edit_video",
+        "expand": "expand_video",
+        "upscale": "upscale_image / upscale_video",
+        "status": "get_task"
+      }
+    },
+    "elevenlabs": {
+      "label": "ElevenLabs (creative)",
+      "kind": "connector",
+      "available_when": "tools named mcp__ElevenLabs__creative_* are present",
+      "cost": "credits",
+      "operations": [
+        "t2i",
+        "i2i",
+        "t2v",
+        "i2v",
+        "tts",
+        "voice_design",
+        "sfx",
+        "music"
+      ],
+      "verified": false,
+      "snapshot": "2026-11-03 from tool schemas",
+      "discovery": "creative_get_flow_node_types() lists runnable models; generate calls accept estimate_only:true to price without generating",
+      "tools": {
+        "speech": "creative_generate_speech",
+        "voices": "creative_list_voices",
+        "voice_design": "creative_design_voice",
+        "image": "creative_generate_image",
+        "edit": "creative_edit_image",
+        "video": "creative_generate_video",
+        "status": "creative_get_flow_run_status"
+      },
+      "notes": "Spends credits. The user declined a paid ElevenLabs call in the reference session — use only with explicit approval."
+    }
+  }
+}
